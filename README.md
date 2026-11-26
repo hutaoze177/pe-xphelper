@@ -48,7 +48,7 @@ build/build.ps1 -GameDir "X:\path\to\Project Exhibitionist"
 
 `dark-suite-cn/` 是本仓库维护的 Dark Suite 汉化版本。
 
-- **原插件**：Dark Suite 2.6.3（BepInEx 5 插件，插件 GUID `com.darksuite.pe`，由原作者发布；本仓库不包含原版安装包）
+- **原插件**：Dark Suite 2.6.3（作者 **DoomerDGR8**，发布在 AyakaMods：https://ayakamods.com/mods/dark-suite.5714/ ；BepInEx 5 插件，GUID `com.darksuite.pe`）——本仓库不包含原版安装包，请从原贴下载原版
 - **汉化方式**：Mono.Cecil 读取原版 DLL，扫描全部 1228 条 `ldstr`，按「类型 + 方法 + 原文」三元组精确定位，替换 294 条界面字符串（共 308 处），不反编译、不重编
 - **本仓库的额外修复**：
   - `SlowDetection` 的反射字段名 `CooldownTime` 曾被误译成「冷却时间」，导致每帧 `NullReferenceException`，已还原为 `CooldownTime`
