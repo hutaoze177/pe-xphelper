@@ -1,0 +1,4 @@
+dist/
+*.zip
+.vs/
+bin/obj/
