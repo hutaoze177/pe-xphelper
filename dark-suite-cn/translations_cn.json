@@ -1,0 +1,1766 @@
+[
+ {
+  "type": "DarkSuite.FirstPersonFix",
+  "method": "Init",
+  "from": "Enabled",
+  "to": "启用"
+ },
+ {
+  "type": "DarkSuite.FirstPersonFix",
+  "method": "Init",
+  "from": "Make the character strafe (face the camera direction) while in first person, and restore normal movement when leaving it.",
+  "to": "第一人称下让角色横移（面朝镜头方向），退出时恢复正常移动。"
+ },
+ {
+  "type": "DarkSuite.FirstPersonFix",
+  "method": "<Init>m__1",
+  "from": "The game now includes its own first-person movement fix, so this option is not needed and has no effect.",
+  "to": "游戏现在自带第一人称移动修正，因此该选项不再需要，也不会有任何效果。"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "Enabled",
+  "to": "启用"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "GPS route line to the current destination (target > pin > Home).",
+  "to": "在当前目的地之间绘制 GPS 路线（目标 > 图钉 > 家）。"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "RouteOnMinimap",
+  "to": "小地图路线"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "Also draw the route as dots on the minimap.",
+  "to": "同时在小地图上用圆点绘制路线。"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "LineWidth",
+  "to": "线宽"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "Route line width (m).",
+  "to": "路线宽度（米）。"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "PulseSpeed",
+  "to": "脉动速度"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "How fast the light pulses travel along the line (m/s). 0 = static.",
+  "to": "光点沿路线移动的速度（米/秒）。0 = 静止。"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "PulseLength",
+  "to": "脉动间距"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "Distance between pulses (m).",
+  "to": "光点之间的间距（米）。"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "LineHeight",
+  "to": "线高"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "Height of the line above the ground (m).",
+  "to": "路线离地高度（米）。"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "ReplanSeconds",
+  "to": "重算间隔"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "How often the route is recalculated.",
+  "to": "路线重新计算的间隔。"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "LineColor",
+  "to": "路线颜色"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "Route colour (hex).",
+  "to": "路线颜色（十六进制）。"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "Toggle",
+  "to": "切换"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Init",
+  "from": "Toggle GPS navigation.",
+  "to": "打开或关闭 GPS 导航。"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Update",
+  "from": "GPS: no destination",
+  "to": "GPS：无目的地"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Update",
+  "from": "GPS {0}: {1:0} m{2}",
+  "to": "GPS {0}：{1:0} 米{2}"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Update",
+  "from": " (partial)",
+  "to": "（部分路径）"
+ },
+ {
+  "type": "DarkSuite.Gps",
+  "method": "Update",
+  "from": ": no navmesh route, straight line",
+  "to": "：无导航网格路线，直线连接"
+ },
+ {
+  "type": "DarkSuite.Interference",
+  "method": "CheatMenuNote",
+  "from": "Cheat Menu is also changing movement speed (x",
+  "to": "Cheat Menu 同时也在修改移动速度（x"
+ },
+ {
+  "type": "DarkSuite.Interference",
+  "method": "CheatMenuNote",
+  "from": "), so the result is not Dark Suite's alone. Set its movement speed to 1 to use only this (Cheat Menu = Exhi Mod Menu, F5).",
+  "to": "），所以效果并非只来自 Dark Suite。把它的移动速度设为 1，即可只使用本功能（Cheat Menu = Exhi Mod Menu，F5）。"
+ },
+ {
+  "type": "DarkSuite.Interference",
+  "method": "CheatMenuNote",
+  "from": "Cheat Menu already has infinite stamina switched on; both do the same job (Cheat Menu = Exhi Mod Menu, F5).",
+  "to": "Cheat Menu 已经开启了无限体力，两者作用相同（Cheat Menu = Exhi Mod Menu，F5）。"
+ },
+ {
+  "type": "DarkSuite.Interference",
+  "method": "CheatMenuNote",
+  "from": "Cheat Menu has No detection switched on, which overrides detection - these options may have no visible effect (Cheat Menu = Exhi Mod Menu, F5).",
+  "to": "Cheat Menu 开启了“无检测”，它会覆盖检测机制——这些选项可能看不出效果（Cheat Menu = Exhi Mod Menu，F5）。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "AlwaysShowMinimap",
+  "to": "始终显示小地图"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "Force the minimap on regardless of the in-game Show Minimap setting.",
+  "to": "无视游戏内的“显示小地图”设置，始终打开小地图。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "CompassBar",
+  "to": "罗盘条"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "Compass bar at the top of the screen with Home / waypoint / target markers.",
+  "to": "屏幕顶部的罗盘条，显示家／航点／目标标记。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "CompassDistances",
+  "to": "罗盘距离"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "Show the distance under each compass marker.",
+  "to": "在每个罗盘标记下方显示距离。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "CompassWidth",
+  "to": "罗盘宽度"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "Compass bar width (px).",
+  "to": "罗盘条宽度（像素）。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "CompassY",
+  "to": "罗盘顶距"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "Compass bar distance from the top (px).",
+  "to": "罗盘条距屏幕顶部的距离（像素）。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "CompassFieldOfView",
+  "to": "罗盘视野"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "Degrees of heading shown across the bar.",
+  "to": "罗盘条横向显示的朝向范围（度）。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "MinimapArrows",
+  "to": "小地图箭头"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "Arrows on the minimap edge pointing to Home (green) and the selected target (blue).",
+  "to": "小地图边缘指向家（绿色）和所选目标（蓝色）的箭头。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "ArrowSize",
+  "to": "箭头大小"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "Minimap arrow size (px).",
+  "to": "小地图箭头大小（像素）。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "NpcMarkers",
+  "to": "NPC 标记"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "NPC dots on the minimap (grey idle, orange suspicious, red alerted).",
+  "to": "小地图上的 NPC 圆点（灰色＝空闲，橙色＝怀疑，红色＝警觉）。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "NpcDotSize",
+  "to": "NPC 圆点大小"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "NPC dot size (px).",
+  "to": "NPC 圆点大小（像素）。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "MapPanAtAnyZoom",
+  "to": "任意缩放平移"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "Expanded map (M): allow dragging / arrow-key panning even at 1x zoom, and pan further than the game allows. Double-click a POI to make it the target.",
+  "to": "大地图（M）：即使 1 倍缩放也允许拖拽／方向键平移，并可超出游戏允许的范围。双击兴趣点即可设为目标。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "MapPanRangeMeters",
+  "to": "平移范围"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "How far the expanded map can be panned from the player (m).",
+  "to": "大地图可以离开玩家多远（米）。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "MapKeyPanSpeed",
+  "to": "按键平移速度"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "Arrow-key pan speed on the expanded map (m/s).",
+  "to": "大地图上方向键的平移速度（米/秒）。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "ToggleArrows",
+  "to": "切换箭头"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "Toggle the minimap arrows.",
+  "to": "打开或关闭小地图箭头。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "ToggleCompass",
+  "to": "切换罗盘"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "Toggle the compass bar.",
+  "to": "打开或关闭罗盘条。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "ToggleNpc",
+  "to": "切换 NPC 标记"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "Toggle NPC markers.",
+  "to": "打开或关闭 NPC 标记。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "ClearTarget",
+  "to": "清除目标"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "Init",
+  "from": "Clear the selected POI target.",
+  "to": "清除已选的兴趣点目标。"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": ".cctor",
+  "from": "N",
+  "to": "北"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": ".cctor",
+  "from": "NE",
+  "to": "东北"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": ".cctor",
+  "from": "E",
+  "to": "东"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": ".cctor",
+  "from": "SE",
+  "to": "东南"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": ".cctor",
+  "from": "S",
+  "to": "南"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": ".cctor",
+  "from": "SW",
+  "to": "西南"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": ".cctor",
+  "from": "W",
+  "to": "西"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": ".cctor",
+  "from": "NW",
+  "to": "西北"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "<Init>m__1",
+  "from": "Target",
+  "to": "目标"
+ },
+ {
+  "type": "DarkSuite.MinimapPlus",
+  "method": "<Init>m__1",
+  "from": "Clear target",
+  "to": "清除目标"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "TwoPhaseEnabled",
+  "to": "两阶段检测"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "Two-phase attention: fast to the half point, slow after it.",
+  "to": "两阶段注意力：前半段涨得快，越过半程后变慢。"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "FastTimeToDetect",
+  "to": "快速阶段秒数"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "Seconds to fill the bar at point blank BEFORE the half point. Stock 7.",
+  "to": "贴脸时涨满前半段进度条所需的秒数。原版为 7。"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "SlowTimeToDetect",
+  "to": "慢速阶段秒数"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "Equivalent seconds-to-fill AFTER the half point. Higher = slower.",
+  "to": "半程之后的等效涨满秒数。数值越大越慢。"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "HalfPoint",
+  "to": "半程点"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "Bar level where the slow phase begins (0.55 leaves margin above the 50% mission check).",
+  "to": "进入慢速阶段的进度条位置（0.55 可为 50% 的任务判定留出余量）。"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "CooldownTime",
+  "to": "冷却时间"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "Seconds for the bar to drain when unseen. Stock 5.",
+  "to": "脱离视线后进度条回落所需秒数。原版为 5。"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "FreezeEnabled",
+  "to": "冻结检测"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "Never let an NPC's bar pass FreezeAt, so detection can never complete.",
+  "to": "不让 NPC 的进度条超过冻结值，检测永远不会完成。"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "FreezeAt",
+  "to": "冻结阈值"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "Bar level to freeze at. Alert triggers at 1.0.",
+  "to": "进度条的冻结位置。达到 1.0 就会触发警报。"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "ShowHud",
+  "to": "显示状态行"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "Show the small status line at the bottom-left.",
+  "to": "在左下角显示小状态行。"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "StepSeconds",
+  "to": "调整步长"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "How much the slower/faster keys change SlowTimeToDetect.",
+  "to": "更慢／更快热键每次调整慢速阶段秒数的幅度。"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "ToggleTwoPhase",
+  "to": "切换两阶段"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "Enable/disable the two-phase override.",
+  "to": "打开或关闭两阶段覆盖。"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "Slower",
+  "to": "更慢"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "Raise SlowTimeToDetect.",
+  "to": "增大慢速阶段秒数。"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "Faster",
+  "to": "更快"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "Lower SlowTimeToDetect.",
+  "to": "减小慢速阶段秒数。"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "ToggleFreeze",
+  "to": "切换冻结"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "Toggle the freeze.",
+  "to": "打开或关闭冻结。"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "ToggleHud",
+  "to": "切换状态行"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Init",
+  "from": "Show/hide the status line.",
+  "to": "显示或隐藏状态行。"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Hotkeys",
+  "from": "two-phase ON",
+  "to": "两阶段：开"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Hotkeys",
+  "from": "two-phase OFF",
+  "to": "两阶段：关"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Hotkeys",
+  "from": "slow phase = ",
+  "to": "慢速阶段 = "
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Hotkeys",
+  "from": "freeze at {0:0}% ON",
+  "to": "冻结在 {0:0}%：开"
+ },
+ {
+  "type": "DarkSuite.SlowDetection",
+  "method": "Hotkeys",
+  "from": "freeze OFF",
+  "to": "冻结：关"
+ },
+ {
+  "type": "DarkSuite.SlowDetection/SlowDetectionHud",
+  "method": "OnGUI",
+  "from": "Detection: two-phase {0} (to {1:0}%: {2:0}s, after: {3:0}s)  freeze@{4:0}% {5}",
+  "to": "检测：两阶段 {0}（至 {1:0}%：{2:0} 秒，之后：{3:0} 秒）  冻结@{4:0}% {5}"
+ },
+ {
+  "type": "DarkSuite.SlowDetection/SlowDetectionHud",
+  "method": "OnGUI",
+  "from": "ON",
+  "to": "开"
+ },
+ {
+  "type": "DarkSuite.SlowDetection/SlowDetectionHud",
+  "method": "OnGUI",
+  "from": "OFF",
+  "to": "关"
+ },
+ {
+  "type": "DarkSuite.InfiniteStamina",
+  "method": "Init",
+  "from": "Enabled",
+  "to": "启用"
+ },
+ {
+  "type": "DarkSuite.InfiniteStamina",
+  "method": "Init",
+  "from": "Infinite stamina for running / sprinting / jumping / rolling.",
+  "to": "奔跑／冲刺／跳跃／翻滚不消耗体力。"
+ },
+ {
+  "type": "DarkSuite.InfiniteStamina",
+  "method": "Init",
+  "from": "Toggle",
+  "to": "切换"
+ },
+ {
+  "type": "DarkSuite.InfiniteStamina",
+  "method": "Init",
+  "from": "Toggle infinite stamina.",
+  "to": "打开或关闭无限体力。"
+ },
+ {
+  "type": "DarkSuite.BlockThreats",
+  "method": "Init",
+  "from": "BlockPolice",
+  "to": "封锁警察"
+ },
+ {
+  "type": "DarkSuite.BlockThreats",
+  "method": "Init",
+  "from": "No police officers / patrols / wanted responses; existing ones are removed.",
+  "to": "不生成警察、巡逻队和通缉响应；已存在的会被移除。"
+ },
+ {
+  "type": "DarkSuite.BlockThreats",
+  "method": "Init",
+  "from": "BlockNewsCrews",
+  "to": "封锁记者"
+ },
+ {
+  "type": "DarkSuite.BlockThreats",
+  "method": "Init",
+  "from": "No TV news / reporter troupes; existing ones are removed.",
+  "to": "不生成电视新闻和记者团；已存在的会被移除。"
+ },
+ {
+  "type": "DarkSuite.BlockThreats",
+  "method": "Init",
+  "from": "TogglePolice",
+  "to": "切换警察封锁"
+ },
+ {
+  "type": "DarkSuite.BlockThreats",
+  "method": "Init",
+  "from": "Toggle police block.",
+  "to": "打开或关闭警察封锁。"
+ },
+ {
+  "type": "DarkSuite.BlockThreats",
+  "method": "Init",
+  "from": "ToggleNews",
+  "to": "切换记者封锁"
+ },
+ {
+  "type": "DarkSuite.BlockThreats",
+  "method": "Init",
+  "from": "Toggle news crew block.",
+  "to": "打开或关闭记者团封锁。"
+ },
+ {
+  "type": "DarkSuite.BossKey",
+  "method": "Init",
+  "from": "BossKey",
+  "to": "老板键"
+ },
+ {
+  "type": "DarkSuite.BossKey",
+  "method": "Init",
+  "from": "Enabled",
+  "to": "启用"
+ },
+ {
+  "type": "DarkSuite.BossKey",
+  "method": "Init",
+  "from": "Enable the boss key.",
+  "to": "启用老板键。"
+ },
+ {
+  "type": "DarkSuite.BossKey",
+  "method": "Init",
+  "from": "MuteAudio",
+  "to": "静音"
+ },
+ {
+  "type": "DarkSuite.BossKey",
+  "method": "Init",
+  "from": "Silence all audio while the cover is up.",
+  "to": "遮挡画面时静音全部声音。"
+ },
+ {
+  "type": "DarkSuite.BossKey",
+  "method": "Init",
+  "from": "CoverColor",
+  "to": "遮挡颜色"
+ },
+ {
+  "type": "DarkSuite.BossKey",
+  "method": "Init",
+  "from": "Opaque cover colour (hex).",
+  "to": "不透明遮挡层的颜色（十六进制）。"
+ },
+ {
+  "type": "DarkSuite.BossKey",
+  "method": "Init",
+  "from": "Pause + opaque cover. Press again to resume a hard pause.",
+  "to": "暂停并显示不透明遮挡层。再按一次恢复硬暂停。"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "Enabled",
+  "to": "启用"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "Apply the speed multipliers.",
+  "to": "应用速度倍数。"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "NormalMultiplier",
+  "to": "普通速度倍数"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "Walk / run / crouch speed multiplier.",
+  "to": "走／跑／蹲伏速度倍数。"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "SprintMultiplier",
+  "to": "冲刺速度倍数"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "Sprint speed multiplier.",
+  "to": "冲刺速度倍数。"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "HotkeyStep",
+  "to": "调整步长"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "Change per hotkey press.",
+  "to": "每次按键调整的幅度。"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "NormalUp",
+  "to": "普通加速"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "Normal speed +step.",
+  "to": "普通速度 +一步。"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "NormalDown",
+  "to": "普通减速"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "Normal speed -step.",
+  "to": "普通速度 -一步。"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "SprintUp",
+  "to": "冲刺加速"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "Sprint speed +step.",
+  "to": "冲刺速度 +一步。"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "SprintDown",
+  "to": "冲刺减速"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "Sprint speed -step.",
+  "to": "冲刺速度 -一步。"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "Reset",
+  "to": "重置"
+ },
+ {
+  "type": "DarkSuite.SpeedTweak",
+  "method": "Init",
+  "from": "Reset both multipliers to 1.0.",
+  "to": "把两个倍数都重置为 1.0。"
+ },
+ {
+  "type": "DarkSuite.AutoXray",
+  "method": "Init",
+  "from": "Enabled",
+  "to": "启用"
+ },
+ {
+  "type": "DarkSuite.AutoXray",
+  "method": "Init",
+  "from": "Turn x-ray on automatically when hiding in a trash can, locker or dumpster (H still toggles it).",
+  "to": "躲进垃圾桶、储物柜或大型垃圾箱时自动开启透视（H 键仍可手动切换）。"
+ },
+ {
+  "type": "DarkSuite.AutoXray",
+  "method": "Init",
+  "from": "Opacity",
+  "to": "透明度"
+ },
+ {
+  "type": "DarkSuite.AutoXray",
+  "method": "Init",
+  "from": "Override the x-ray opacity (0 = game's value, stock 0.3). Lower = more see-through.",
+  "to": "覆盖透视的不透明度（0 = 使用游戏原值，原版为 0.3）。数值越低越透明。"
+ },
+ {
+  "type": "DarkSuite.Unstuck",
+  "method": "Init",
+  "from": "Unstuck",
+  "to": "脱困"
+ },
+ {
+  "type": "DarkSuite.Unstuck",
+  "method": "Init",
+  "from": "Distance",
+  "to": "跳跃距离"
+ },
+ {
+  "type": "DarkSuite.Unstuck",
+  "method": "Init",
+  "from": "How far to jump in the look direction (m). Press repeatedly if needed.",
+  "to": "朝视线方向跳跃的距离（米）。必要时可以多按几次。"
+ },
+ {
+  "type": "DarkSuite.Unstuck",
+  "method": "Init",
+  "from": "Lift",
+  "to": "抬升高度"
+ },
+ {
+  "type": "DarkSuite.Unstuck",
+  "method": "Init",
+  "from": "Extra height added to the jump (m), helps when sunk into the floor.",
+  "to": "额外增加的跳跃高度（米），卡进地板时很有用。"
+ },
+ {
+  "type": "DarkSuite.Unstuck",
+  "method": "Init",
+  "from": "Nudge the character forward to get unstuck.",
+  "to": "把角色向前推一下以脱离卡住状态。"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "Enabled",
+  "to": "启用"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "Keep the game's UI at its 16:9 size on wider screens (scale by height instead of width). Off by default: some screens may need a per-canvas scale.",
+  "to": "在更宽的屏幕上让游戏界面保持 16:9 大小（按高度而不是宽度缩放）。默认关闭：部分界面可能需要单独设置画布缩放。"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "AspectThreshold",
+  "to": "宽高比阈值"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "Apply when screen width/height is above this (16:9 = 1.78, 21:9 = 2.33, 32:9 = 3.56).",
+  "to": "屏幕宽高比高于此值时生效（16:9 = 1.78，21:9 = 2.33，32:9 = 3.56）。"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "MatchHeight",
+  "to": "匹配高度"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "CanvasScaler match value: 1 = height, 0 = width (game default). Keep at 1 and use UiScale to resize.",
+  "to": "CanvasScaler 匹配值：1 = 高度，0 = 宽度（游戏默认）。保持 1，改用“界面缩放”调整大小。"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "ForceScreenMatchMode",
+  "to": "强制匹配模式"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "Also force the scaler's screen match mode to Match Width Or Height; the Expand/Shrink modes ignore the match value entirely.",
+  "to": "同时把缩放的屏幕匹配模式强制为“按宽高匹配”；Expand/Shrink 模式会完全忽略匹配值。"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "UiScale",
+  "to": "界面缩放"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "UI size multiplier on top of the height-matched size (1 = the 16:9 size). Full-screen layouts clip above 1.0 - use ScaleOverrides to keep those at 1.",
+  "to": "在按高度匹配后的尺寸上再乘的倍数（1 = 16:9 时的尺寸）。超过 1.0 会裁切全屏布局，可用“画布缩放覆盖”把那些保持在 1。"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "ScaleOverrides",
+  "to": "画布缩放覆盖"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "Per-canvas scale overrides, edit in the .cfg: Name=value separated by ; or , - Name is matched (case-insensitive) against part of the canvas name, first match wins. Example: SharedUI=1.0; HudCanvas=1.2. Canvas names are logged once when LogCanvases is on.",
+  "to": "按画布单独设置缩放，在 .cfg 里编辑：名称=数值，用 ; 或 , 分隔——名称会与画布名的一部分做不区分大小写匹配，先匹配到的生效。示例：SharedUI=1.0; HudCanvas=1.2。开启“记录画布”时会在日志里输出一次画布名。"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "LogCanvases",
+  "to": "记录画布"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "Log each canvas the fix touches (once), with its reference size and scale - use it to find names for ScaleOverrides.",
+  "to": "把修正涉及的每个画布记录一次日志（含参考尺寸与缩放），可用来查找“画布缩放覆盖”需要的名称。"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "ForceBorderless",
+  "to": "强制无边框"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "EXPERIMENTAL: if the game is in exclusive fullscreen, switch it to borderless at startup. Can crash the ReShade/RenoDX chain - prefer choosing Windowed/Borderless in the game's own settings.",
+  "to": "实验性：如果游戏处于独占全屏，启动时切换为无边框。可能导致 ReShade/RenoDX 链崩溃——建议直接在游戏自己的设置里选择窗口化／无边框。"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "RunInBackground",
+  "to": "后台运行"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "Keep the game running when it loses focus.",
+  "to": "游戏失去焦点时继续运行。"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "FixPcCustomizerAspect",
+  "to": "修正定制比例"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "Init",
+  "from": "Keep the in-PC character customizer preview at the correct aspect ratio.",
+  "to": "让电脑里的角色定制预览保持正确的宽高比。"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "DetectConflict",
+  "from": "The standalone \"Ultrawide UI + FOV Fix\" mod is installed. Dark Suite's ultrawide fix stays off while it is present (the two would fight over the same values). Remove that mod to use this one.",
+  "to": "检测到独立的“Ultrawide UI + FOV Fix”模组。它存在期间 Dark Suite 的宽屏修正会保持关闭（两者会争抢同样的数值）。移除那个模组后才能使用本功能。"
+ },
+ {
+  "type": "DarkSuite.UltrawideFix",
+  "method": "DetectConflict",
+  "from": "Exhi Mod Menu (Cheat Menu) has its own ultrawide fix switched on. Dark Suite's stays off while it is on, so the two do not fight over the same values. Turn off [Ultrawide] Enabled in evan.exhi.modmenu.cfg to use Dark Suite's.",
+  "to": "Cheat Menu（Exhi Mod Menu）已开启自带的宽屏修正。开启期间 Dark Suite 的会保持关闭，避免两者争抢相同数值。要用 Dark Suite 的，请在 evan.exhi.modmenu.cfg 里关掉 [Ultrawide] 段的 Enabled。"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "SpeedUpSearchAnimation",
+  "to": "加速搜索动画"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "Also play the search animation (character and bin lid) at the same speed. Most of a search is animation time, so without this the multiplier only shortens the middle part.",
+  "to": "搜索动画（角色和垃圾桶盖）也按同样速度播放。搜索时间多半花在动画上，不开启时倍数只缩短中间那段。"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "SearchSpeedMultiplier",
+  "to": "搜索速度倍数"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "Trash can rummage speed (1 = stock). Also shortens the hold-to-search time and, with SpeedUpSearchAnimation, the animation.",
+  "to": "翻垃圾桶的速度（1 = 原版）。同时缩短长按搜索的时间，并在开启“加速搜索动画”时加速动画。"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "OverrideItemCount",
+  "to": "覆盖物品数量"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "Override how many items a trash can gives.",
+  "to": "覆盖每个垃圾桶给出的物品数量。"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "MinItems",
+  "to": "最少物品"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "Minimum items per can.",
+  "to": "每个垃圾桶的最少物品数。"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "MaxItems",
+  "to": "最多物品"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "Maximum items per can.",
+  "to": "每个垃圾桶的最多物品数。"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "GuaranteeRarity",
+  "to": "保底稀有度"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "Guarantee that at least one item of the chosen rarity drops from every can.",
+  "to": "保证每个垃圾桶至少掉落一件所选稀有度的物品。"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "GuaranteedRarity",
+  "to": "保底等级"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "0 = Common, 1 = Rare, 2 = Legendary.",
+  "to": "0 = 普通，1 = 稀有，2 = 传说。"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "ItemsPerRow",
+  "to": "每行物品数"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "Trash can loot is laid out in rows of this many items, each new row a bit further from the can (0 = stock single line).",
+  "to": "垃圾桶掉落按每行这么多件排布，每新增一行离垃圾桶更远一些（0 = 原版的单行）。"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "RowSpacing",
+  "to": "行间距"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "Distance between loot rows (m).",
+  "to": "掉落行之间的距离（米）。"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "DeleteHeldItem",
+  "to": "删除手持物品"
+ },
+ {
+  "type": "DarkSuite.LootTweaks",
+  "method": "Init",
+  "from": "Destroy the item in your hand immediately: the held flash/cover item (TV, box, bag...) or the selected hotbar item (toys, usable items), whole stack.",
+  "to": "立即销毁手里的物品：手持的遮挡／闪光道具（电视、箱子、袋子……）或快捷栏选中的物品（玩具、可用道具），整组删除。"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "LockWeather",
+  "to": "锁定天气"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "Keep the weather you picked: the game's forecast rotation is suppressed. Session only - resets on launch.",
+  "to": "保持你选定的天气：游戏自带的天气轮换会被抑制。仅本次运行有效，重开游戏后恢复。"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "NoFog",
+  "to": "禁用迷雾"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "Disable the game's dense fog feature and Unity fog.",
+  "to": "关闭游戏的浓雾功能和 Unity 雾效。"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "TransitionSeconds",
+  "to": "过渡时长"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "Blend time when switching weather (0 = instant).",
+  "to": "切换天气时的混合时长（0 = 立即切换）。"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "Sunny",
+  "to": "晴天"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "Overcast",
+  "to": "阴天"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "CalmRain",
+  "to": "小雨"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "Rain",
+  "to": "雨天"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "Storm",
+  "to": "暴风雨"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "Fogness",
+  "to": "雾天"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "Snow",
+  "to": "雪天"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "ListPresets",
+  "to": "列出预设"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "Log the presets present in this scene.",
+  "to": "在日志里列出当前场景中存在的天气预设。"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "ToggleLock",
+  "to": "切换锁定"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "Toggle weather lock.",
+  "to": "打开或关闭天气锁定。"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "ToggleNoFog",
+  "to": "切换去雾"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "Init",
+  "from": "Toggle fog removal.",
+  "to": "打开或关闭去雾。"
+ },
+ {
+  "type": "DarkSuite.WeatherControl",
+  "method": "<Init>m__1",
+  "from": "Set weather now",
+  "to": "立即切换天气"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "Init",
+  "from": "SkipStartupLogos",
+  "to": "跳过开场标志"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "Init",
+  "from": "Skip the studio logo and disclaimer screens at game start (jumps to the main menu as soon as it is ready).",
+  "to": "跳过游戏启动时的发行商标志和免责声明画面（主菜单一准备好就直接进入）。"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "Init",
+  "from": "SkipRunIntro",
+  "to": "跳过开场奔跑"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "Init",
+  "from": "Skip the Long Way Home run intro sequence automatically.",
+  "to": "自动跳过 Long Way Home 的开场奔跑段落。"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "Init",
+  "from": "SkipCinematics",
+  "to": "跳过过场动画"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "Init",
+  "from": "Skip the Long Way Home location cinematics (university, stadium, restaurant, gym) as soon as the game would accept the skip key.",
+  "to": "只要游戏接受跳过键，就立即跳过 Long Way Home 各地点（大学、体育场、餐厅、健身房）的过场动画。"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "Init",
+  "from": "SkipTutorialPopups",
+  "to": "跳过教程弹窗"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "Init",
+  "from": "Never show the first-use tutorial popups (the current game version no longer has them, so this does nothing).",
+  "to": "不再显示首次使用的教程弹窗（当前游戏版本已没有这些弹窗，因此该选项没有效果）。"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "Init",
+  "from": "FastPoiArrival",
+  "to": "快速抵达兴趣点"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "Init",
+  "from": "Shorten the POI arrival title card / camera presentation to a flash.",
+  "to": "把抵达兴趣点时的标题卡／镜头展示缩短成一闪而过。"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "OverhaulNote",
+  "from": "Project Exhibitionist Overhaul is installed and already skips the ",
+  "to": "检测到已安装 Project Exhibitionist Overhaul，它已经会跳过 "
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "OverhaulNote",
+  "from": "startup logos and the run intro",
+  "to": "开场标志和开场奔跑"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "OverhaulNote",
+  "from": "run intro",
+  "to": "开场奔跑"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "OverhaulNote",
+  "from": "startup logos",
+  "to": "开场标志"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "OverhaulNote",
+  "from": ", so Dark Suite's ",
+  "to": "，因此 Dark Suite 的"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "OverhaulNote",
+  "from": "copies of these are",
+  "to": "这些功能已"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "OverhaulNote",
+  "from": "copy of this is",
+  "to": "该功能已"
+ },
+ {
+  "type": "DarkSuite.SkipIntros",
+  "method": "OverhaulNote",
+  "from": " paused while it is (your settings here are kept). Cinematics and the other options still work.",
+  "to": "暂停（此处的设置仍会保留）。过场动画和其他选项依然有效。"
+ },
+ {
+  "type": "DarkSuite.KeepPlaying",
+  "method": "Init",
+  "from": "NeverEndTripOnEncounter",
+  "to": "遭遇不结束行程"
+ },
+ {
+  "type": "DarkSuite.KeepPlaying",
+  "method": "Init",
+  "from": "Lost encounters (NPC catches, reporters) never end the trip; you walk away and keep playing. Police capture still ends it (see Block Threats).",
+  "to": "被 NPC 抓住或记者发现都不会结束行程；走开就能继续玩。被警察抓到仍会结束（见“封锁威胁”）。"
+ },
+ {
+  "type": "DarkSuite.TitleOutfit",
+  "method": "Init",
+  "from": "Mode",
+  "to": "模式"
+ },
+ {
+  "type": "DarkSuite.TitleOutfit",
+  "method": "Init",
+  "from": "Title screen outfit: Game (stock, common only), AnyRarity (common, rare and legendary), Nude.",
+  "to": "标题画面服装：Game（原版，仅普通品质）、AnyRarity（普通、稀有和传说品质）、Nude（裸体）。"
+ },
+ {
+  "type": "DarkSuite.TitleOutfit",
+  "method": "Init",
+  "from": "AllowRevealingPieces",
+  "to": "允许暴露部件"
+ },
+ {
+  "type": "DarkSuite.TitleOutfit",
+  "method": "Init",
+  "from": "AnyRarity: also allow pieces that don't cover decently.",
+  "to": "AnyRarity：同时允许遮蔽度不足的部件。"
+ },
+ {
+  "type": "DarkSuite.TitleOutfit",
+  "method": "<Init>m__0",
+  "from": "Title outfit",
+  "to": "标题服装"
+ },
+ {
+  "type": "DarkSuite.TitleOutfit",
+  "method": "<Init>m__0",
+  "from": "Game",
+  "to": "游戏原版"
+ },
+ {
+  "type": "DarkSuite.TitleOutfit",
+  "method": "<Init>m__0",
+  "from": "Any rarity",
+  "to": "任意稀有度"
+ },
+ {
+  "type": "DarkSuite.TitleOutfit",
+  "method": "<Init>m__0",
+  "from": "Nude",
+  "to": "裸体"
+ },
+ {
+  "type": "DarkSuite.PhotoModeFix",
+  "method": "Init",
+  "from": "Enabled",
+  "to": "启用"
+ },
+ {
+  "type": "DarkSuite.PhotoModeFix",
+  "method": "Init",
+  "from": "Give the photo mode / drone camera the same render settings as the gameplay camera (fixes the dark world and red figures).",
+  "to": "让拍照模式／无人机相机使用与游戏相机相同的渲染设置（修复世界发暗和人物发红的问题）。"
+ },
+ {
+  "type": "DarkSuite.PhotoModeFix",
+  "method": "Init",
+  "from": "NearClip",
+  "to": "近裁剪面"
+ },
+ {
+  "type": "DarkSuite.PhotoModeFix",
+  "method": "Init",
+  "from": "Near clip for the photo camera (game uses 0.001, which breaks depth-based effects). 0 = use the gameplay camera's.",
+  "to": "拍照相机的近裁剪距离（游戏用 0.001，会破坏依赖深度的效果）。0 = 沿用游戏相机。"
+ },
+ {
+  "type": "DarkSuite.PhotoModeFix",
+  "method": "Init",
+  "from": "CaptureFallback",
+  "to": "截图回退"
+ },
+ {
+  "type": "DarkSuite.PhotoModeFix",
+  "method": "Init",
+  "from": "If the game's photo save gets no image from the screen (happens with some swapchain/overlay setups), render the photo directly from the camera instead.",
+  "to": "如果游戏自带的拍照保存从屏幕取不到图像（某些交换链／叠加层环境下会这样），改为直接从相机渲染照片。"
+ },
+ {
+  "type": "DarkSuite.PhotoModeFix",
+  "method": "Init",
+  "from": "KeepPostProcessingOff",
+  "to": "保持关闭后处理"
+ },
+ {
+  "type": "DarkSuite.PhotoModeFix",
+  "method": "Init",
+  "from": "Experimental: stop the photo view / fly camera from switching URP post-processing on (also drops its film look). Only for setups where photo view or time freeze turn the world dark red.",
+  "to": "实验性：阻止拍照视图／飞行相机开启 URP 后处理（同时去掉它的胶片感）。仅适用于拍照视图或时间静止时世界变成暗红色的情况。"
+ },
+ {
+  "type": "DarkSuite.InventoryTweaks",
+  "method": "Init",
+  "from": "ClothingSlots",
+  "to": "服装格位"
+ },
+ {
+  "type": "DarkSuite.InventoryTweaks",
+  "method": "Init",
+  "from": "How many clothing pieces you can carry (stock 6).",
+  "to": "可携带的服装件数（原版 6）。"
+ },
+ {
+  "type": "DarkSuite.InventoryTweaks",
+  "method": "Init",
+  "from": "DeleteSelectedClothing",
+  "to": "删除选中服装"
+ },
+ {
+  "type": "DarkSuite.InventoryTweaks",
+  "method": "Init",
+  "from": "Delete the selected clothing piece to free its slot (Ctrl+Delete).",
+  "to": "删除选中的服装以空出格位（Ctrl+Delete）。"
+ },
+ {
+  "type": "DarkSuite.OptionsPanel",
+  "method": "CategoryOf",
+  "from": "Other",
+  "to": "其他"
+ },
+ {
+  "type": "DarkSuite.OptionsPanel",
+  "method": "get_HintText",
+  "from": " closes and saves.  Ctrl+Tab / PgUp-PgDn switch tabs.  Click a row, Left/Right nudges it.  Hotkeys: Set, then a key.",
+  "to": " 关闭并保存。Ctrl+Tab / PgUp-PgDn 切换标签页。点击一行后，用左右键微调。热键：先按“设定”，再按一个键。"
+ },
+ {
+  "type": "DarkSuite.OptionsPanel",
+  "method": "Build",
+  "from": "Other",
+  "to": "其他"
+ },
+ {
+  "type": "DarkSuite.OptionsPanel",
+  "method": "Build",
+  "from": "General",
+  "to": "通用"
+ },
+ {
+  "type": "DarkSuite.OptionsPanel",
+  "method": "AddRow",
+  "from": "Reset",
+  "to": "重置"
+ },
+ {
+  "type": "DarkSuite.OptionsPanel",
+  "method": "AddRow",
+  "from": "Set",
+  "to": "设定"
+ },
+ {
+  "type": "DarkSuite.OptionsPanel",
+  "method": "MakeToggle",
+  "from": "ON",
+  "to": "开"
+ },
+ {
+  "type": "DarkSuite.OptionsPanel",
+  "method": "MakeToggle",
+  "from": "OFF",
+  "to": "关"
+ },
+ {
+  "type": "DarkSuite.OptionsPanel",
+  "method": ".cctor",
+  "from": "General",
+  "to": "通用"
+ },
+ {
+  "type": "DarkSuite.OptionsPanel",
+  "method": ".cctor",
+  "from": "Stealth",
+  "to": "潜行"
+ },
+ {
+  "type": "DarkSuite.OptionsPanel",
+  "method": ".cctor",
+  "from": "Player",
+  "to": "玩家"
+ },
+ {
+  "type": "DarkSuite.OptionsPanel",
+  "method": ".cctor",
+  "from": "Navigation",
+  "to": "导航"
+ },
+ {
+  "type": "DarkSuite.OptionsPanel",
+  "method": ".cctor",
+  "from": "World",
+  "to": "世界"
+ },
+ {
+  "type": "DarkSuite.OptionsPanel",
+  "method": ".cctor",
+  "from": "Visuals",
+  "to": "画面"
+ },
+ {
+  "type": "DarkSuite.OptionsPanel/<AddRow>c__AnonStorey6",
+  "method": "<>m__0",
+  "from": "press a key...",
+  "to": "请按下按键…"
+ },
+ {
+  "type": "DarkSuite.SmoothMotion",
+  "method": "Init",
+  "from": "Enabled",
+  "to": "启用"
+ },
+ {
+  "type": "DarkSuite.SmoothMotion",
+  "method": "Init",
+  "from": "Run physics at (about) the frame rate instead of the game's 50 Hz, so character and camera movement is smooth at high FPS.",
+  "to": "让物理以接近帧率的频率运行，而不是游戏的 50 Hz，这样高帧率下角色和镜头移动才顺滑。"
+ },
+ {
+  "type": "DarkSuite.SmoothMotion",
+  "method": "Init",
+  "from": "PhysicsHz",
+  "to": "物理频率"
+ },
+ {
+  "type": "DarkSuite.SmoothMotion",
+  "method": "Init",
+  "from": "Physics updates per second (50-240). 0 = automatic: the game's FPS cap if one is set, else the monitor refresh rate when V-Sync is on, else 120. Best: cap FPS in the game's graphics settings and leave this at 0.",
+  "to": "每秒物理更新次数（50-240）。0 = 自动：有帧率上限就用它，否则开启垂直同步时用显示器刷新率，再否则用 120。最佳做法：在游戏画面设置里锁帧，这里保持 0。"
+ },
+ {
+  "type": "DarkSuite.SmoothMotion",
+  "method": "Init",
+  "from": "LogStatsSeconds",
+  "to": "统计间隔"
+ },
+ {
+  "type": "DarkSuite.SmoothMotion",
+  "method": "Init",
+  "from": "Write average FPS, 1% low and physics steps per frame to the log this often (0 = off).",
+  "to": "每隔这么久把平均帧率、1% low 和每帧物理步数写进日志（0 = 关闭）。"
+ },
+ {
+  "type": "DarkSuite.SmoothMotion",
+  "method": "Init",
+  "from": "Toggle",
+  "to": "切换"
+ },
+ {
+  "type": "DarkSuite.SmoothMotion",
+  "method": "Init",
+  "from": "Turn the fix on/off to compare. Unbound by default - pick a key with Set.",
+  "to": "打开或关闭本修正以做对比。默认未绑定——用“设定”选一个键。"
+ },
+ {
+  "type": "DarkSuite.SmoothMotion",
+  "method": "<Init>m__4",
+  "from": "The standalone SmoothMotion plugin is installed. Dark Suite's Smooth Motion stays off while it is present (both would set the physics step). Remove that plugin to use this one.",
+  "to": "检测到独立的 SmoothMotion 插件。它存在期间 Dark Suite 的顺滑运动保持关闭（两者都会设置物理步长）。移除那个插件后才能使用本功能。"
+ },
+ {
+  "type": "DarkSuite.SmoothMotion",
+  "method": "<Init>m__4",
+  "from": "Project Exhibitionist Overhaul is installed and has its own smooth camera / smooth player on, so Dark Suite's Smooth Motion is paused while it is (your setting here is kept). Turn those off in the Overhaul's settings.json or remove it to use this one.",
+  "to": "检测到 Project Exhibitionist Overhaul，且它自带的顺滑镜头／顺滑角色处于开启状态，因此 Dark Suite 的顺滑运动暂时暂停（此处设置仍会保留）。在 Overhaul 的 settings.json 里关掉那些选项或移除它，即可使用本功能。"
+ },
+ {
+  "type": "DarkSuite.SuitePlugin",
+  "method": "Boot",
+  "from": "MenuKey",
+  "to": "菜单键"
+ },
+ {
+  "type": "DarkSuite.SuitePlugin",
+  "method": "Boot",
+  "from": "Open/close the Dark Suite options panel.",
+  "to": "打开或关闭 Dark Suite 选项面板。"
+ },
+ {
+  "type": "DarkSuite.SuitePlugin",
+  "method": "Boot",
+  "from": "HotkeysEnabled",
+  "to": "启用热键"
+ },
+ {
+  "type": "DarkSuite.SuitePlugin",
+  "method": "Boot",
+  "from": "Master switch for all module hotkeys (each module also has its own Hotkeys Enabled switch). The panel key always works.",
+  "to": "所有模块热键的总开关（每个模块也有自己的热键开关）。面板快捷键始终有效。"
+ },
+ {
+  "type": "DarkSuite.SuitePlugin",
+  "method": "Boot",
+  "from": "PauseWhileOpen",
+  "to": "打开时暂停"
+ },
+ {
+  "type": "DarkSuite.SuitePlugin",
+  "method": "Boot",
+  "from": "Freeze the game while the panel is open.",
+  "to": "面板打开时冻结游戏。"
+ },
+ {
+  "type": "DarkSuite.SuitePlugin",
+  "method": "Boot",
+  "from": "UiScale",
+  "to": "界面缩放"
+ },
+ {
+  "type": "DarkSuite.SuitePlugin",
+  "method": "Boot",
+  "from": "Panel size multiplier (on top of the automatic readability scaling for tall screens).",
+  "to": "面板尺寸倍数（在针对高屏幕的自动可读性缩放之上再放大）。"
+ },
+ {
+  "type": "DarkSuite.SuitePlugin",
+  "method": "BindModuleHotkeySwitches",
+  "from": "HotkeysEnabled",
+  "to": "启用热键"
+ },
+ {
+  "type": "DarkSuite.SuitePlugin",
+  "method": "BindModuleHotkeySwitches",
+  "from": "Allow this module's hotkeys. Also needs Suite > Hotkeys Enabled to be on.",
+  "to": "允许本模块的热键。还需要在 Suite > 启用热键 里打开总开关。"
+ }
+]

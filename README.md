@@ -43,3 +43,20 @@ build/build.ps1 -GameDir "X:\path\to\Project Exhibitionist"
 ## 免责声明
 
 仅用于单机调试与学习，使用后产生的存档变化由使用者自行负责。
+
+## Dark Suite 2.6.3 简体中文（汉化 DLL）
+
+`dark-suite-cn/` 是本仓库维护的 Dark Suite 汉化版本。
+
+- **原插件**：Dark Suite 2.6.3（BepInEx 5 插件，插件 GUID `com.darksuite.pe`，由原作者发布；本仓库不包含原版安装包）
+- **汉化方式**：Mono.Cecil 读取原版 DLL，扫描全部 1228 条 `ldstr`，按「类型 + 方法 + 原文」三元组精确定位，替换 294 条界面字符串（共 308 处），不反编译、不重编
+- **本仓库的额外修复**：
+  - `SlowDetection` 的反射字段名 `CooldownTime` 曾被误译成「冷却时间」，导致每帧 `NullReferenceException`，已还原为 `CooldownTime`
+  - 运行时拼接的英文标题（`SmoothMotion` 等配置段名经 `Nice()` 生成）通过面板文本出口映射补译
+  - 开关的 `ON/OFF` 改为「开/关」
+- **文件**：
+  - `DarkSuite.dll`：BepInEx 5 版本，安装到 `BepInEx\plugins\DarkSuite\`
+  - `translations_cn.json`：294 条替换映射
+  - `汉化说明.txt`：原汉化说明
+
+版权归 Dark Suite 原作者所有；此汉化仅用于学习与自用分享，请勿用于售卖，并支持原作者。

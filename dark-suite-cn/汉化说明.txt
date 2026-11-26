@@ -1,0 +1,50 @@
+Dark Suite 2.6.3 · 简体中文汉化（IL 级字符串替换）
+=================================================
+
+【产物】
+  DarkSuite.dll      ← BepInEx 5 版本（对应 BepInEx/plugins/DarkSuite/DarkSuite.dll）
+  DarkSuite.BE6.dll  ← BepInEx 6 版本（对应 BepInEx/plugins/DarkSuite/DarkSuite.BE6.dll）
+  translations_cn.json ← 完整替换映射（294 条：原文 → 译文，含所属类与方法）
+
+  原文件已在工作区自动备份为 DarkSuite.dll.bak / DarkSuite.BE6.dll.bak。
+
+【做法】
+  1. Mono.Cecil 0.11.6 读取程序集，扫描全部 1228 条 ldstr；
+  2. 按“所在类型 + 方法 + 原字符串”三元组精确定位，逐条替换 operand；
+  3. 不反编译、不重编译，元数据、方法体、异常表全部保留原样；
+  4. 用第三方校验器逐条比对改前/改后：类型 44、方法 320、字段 531、
+     IL 指令 18399 全部一致，1228 个 ldstr 槽位一一对齐，
+     除字符串变量外所有操作数与跳转目标 0 差异。
+
+【改动量】
+  替换 308 处 ldstr（覆盖 294 个不同映射条目），涉及面板标题行、
+  开关/滑块说明、按钮文字、HUD 文本、冲突提示。
+  例：标签页 通用 / 潜行 / 玩家 / 导航 / 世界 / 画面 / 其他；
+      开关 开 / 关；按钮 重置 / 设定 / 请按下按键…；
+      各模块行标题（启用、线宽、脉动速度、两阶段检测、冻结阈值…）。
+
+【刻意保留英文（防止功能损坏）】
+  · 配置段名：Suite / Gps / SlowDetection / Inventory / WeatherControl…（作为 .cfg 段名与逻辑匹配键）
+  · Harmony 补丁目标类型名、方法名（Postfix/Prefix 等）、反射字段名（_mapPanel、_azure、rummageDuration…）
+  · 插件内部 GameObject 名称（Dim / Panel / Tabs / Viewport / Bar / Handle…）
+  · shader 与材质属性名（_BaseMap、_Surface、Universal Render Pipeline/Unlit…）
+  · 全部 ManualLogSource 日志文本
+  · 写进配置并参与字符串比对的可选值：
+      TitleOutfit 的 Game / AnyRarity / Nude、
+      WeatherControl 的 Sunny / Overcast / CalmRain / Rain / Storm / Fog / Snow、
+      Cheat Menu 读取的外部配置键（Enabled / SpeedMultiplier / NoDetection）
+
+【安装】
+  1. 备份游戏目录 BepInEx/plugins/DarkSuite/ 下原 DLL；
+  2. 按 BepInEx 版本替换对应文件（只留一个版本，不要两个都放）；
+  3. 建议删除 BepInEx/cache/ 让插件信息重新扫描；
+  4. 进游戏按面板键（默认 End）查看。
+
+【需要注意的两点】
+  1. 行标题取自配置键名，汉化后键名变中文：
+     旧的 com.darkdoomer.pe.suite.cfg 里英文键不再匹配，首次启动会重建配置
+     （设置回到默认值）。实测 BepInEx 的 ConfigFile 读写中文键名正常。
+  2. 面板使用 Unity 内置动态字体（LegacyRuntime.ttf / Arial.ttf）。
+     Windows 下 Unity 会对缺失字形做系统字体回退，中文通常可直接显示；
+     若某些字显示为方块，把这台机器的实际情况告诉我，可再出一版把
+     字体指向系统中文字体（微软雅黑 / 黑体 / Noto Sans CJK）的 DLL。
