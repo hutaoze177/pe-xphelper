@@ -147,7 +147,8 @@ namespace PE_XpHelper
         private sealed class TravelPoi
         {
             public string Scene;
-            public string Label;
+            public string Label;      // 显示名（已按翻译表转换）
+            public string RawLabel;   // 原始英文名，供搜索时中英双向命中
             public string District;
             public bool Unlocked;
             public int Visits;
@@ -794,7 +795,7 @@ namespace PE_XpHelper
                 TravelPoi p = _travelPois[i];
                 if (filter.Length > 0)
                 {
-                    string hay = ((p.Label ?? "") + " " + (p.Scene ?? "") + " " + (p.District ?? "")).ToLowerInvariant();
+                    string hay = ((p.Label ?? "") + " " + (p.RawLabel ?? "") + " " + (p.Scene ?? "") + " " + (p.District ?? "")).ToLowerInvariant();
                     if (hay.IndexOf(filter, StringComparison.Ordinal) < 0) continue;
                 }
 
@@ -879,8 +880,12 @@ namespace PE_XpHelper
 
             TravelPoi p = new TravelPoi();
             p.Scene = scene;
-            p.Label = string.IsNullOrEmpty(label) ? PrettifyScene(scene) : label;
-            p.District = district;
+
+            // 名称统一走中文映射表：DisplayName → 去前缀的场景名 → 翻译
+            string raw = PrettifyScene(string.IsNullOrEmpty(label) ? scene : label);
+            p.RawLabel = raw;
+            p.Label = Cn(raw);
+            p.District = string.IsNullOrEmpty(district) ? null : Cn(district);
 
             try
             {

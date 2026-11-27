@@ -1,10 +1,11 @@
-﻿# PE Xp Helper 名称翻译表（可直接编辑，保存后重新打开面板即可生效）
+# PE Xp Helper 名称翻译表（可直接编辑，保存后重新打开面板即可生效）
 # 格式：英文名=中文名；等号右边的中文名留空则显示英文
 # 物品与场景点各列出一次；可以在下方追加新条目
 Anal Beads (Candy)=肛珠（糖果）
 Anal Beads (Cyber)=肛珠（赛博）
 Anal Beads (Goth)=肛珠（哥特）
 Anal Beads (Pastel)=肛珠（粉彩）
+Pool=泳池
 Art Gallery=美术馆
 Bag=背包
 Big Box=大箱子
