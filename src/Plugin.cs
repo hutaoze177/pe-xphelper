@@ -15,7 +15,7 @@ using UnityEngine.SceneManagement;
 
 namespace PE_XpHelper
 {
-    [BepInPlugin("com.dsh.pe.xphelper", "PE Xp Helper", "1.5.0")]
+    [BepInPlugin("com.dsh.pe.xphelper", "PE Xp Helper", "1.5.1")]
     public class Plugin : BaseUnityPlugin
     {
         internal static ConfigEntry<float> XpMultiplier;
@@ -156,6 +156,8 @@ namespace PE_XpHelper
         private List<string> _backups;
         private Vector2 _backupScroll;
         private string _backupStatus = "";
+        private string _renamingStamp;
+        private string _renameInput = "";
 
         private static Dictionary<string, string> _nameCn;
         private static bool _nameCnLoaded;
@@ -1535,6 +1537,61 @@ namespace PE_XpHelper
             }
         }
 
+        private bool RenameBackup(string oldStamp, string newName)
+        {
+            try
+            {
+                string name = SanitizeBackupName(newName);
+                if (name.Length == 0)
+                {
+                    _backupStatus = "名字不能为空。";
+                    return false;
+                }
+                if (name == oldStamp)
+                {
+                    _backupStatus = "名字没变。";
+                    return false;
+                }
+
+                string root = BackupRoot();
+                string src = System.IO.Path.Combine(root, oldStamp);
+                string dst = System.IO.Path.Combine(root, name);
+
+                if (!System.IO.Directory.Exists(src))
+                {
+                    _backupStatus = "备份不存在：" + oldStamp;
+                    return false;
+                }
+                if (System.IO.Directory.Exists(dst))
+                {
+                    _backupStatus = "已有同名备份：" + name;
+                    return false;
+                }
+
+                System.IO.Directory.Move(src, dst);
+                _backupStatus = "已改名：" + oldStamp + " → " + name;
+                Plugin.Log.LogInfo(_backupStatus);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _backupStatus = "改名失败：" + ex.Message;
+                Plugin.Log.LogWarning("备份改名失败: " + ex);
+                return false;
+            }
+        }
+
+        private static string SanitizeBackupName(string raw)
+        {
+            string s = (raw ?? "").Trim();
+            if (s.Length == 0) return "";
+
+            char[] bad = System.IO.Path.GetInvalidFileNameChars();
+            for (int i = 0; i < bad.Length; i++) s = s.Replace(bad[i], '_');
+
+            return s.Trim().TrimEnd('.');
+        }
+
         private void RestoreBackup(string stamp)
         {
             try
@@ -1611,14 +1668,39 @@ namespace PE_XpHelper
             for (int i = 0; i < _backups.Count; i++)
             {
                 string stamp = _backups[i];
-                GUILayout.BeginHorizontal();
-                GUILayout.Label(stamp, GUILayout.ExpandWidth(true));
-                if (GUILayout.Button("恢复", GUILayout.Width(56f))) RestoreBackup(stamp);
-                GUILayout.EndHorizontal();
+
+                if (stamp == _renamingStamp)
+                {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("新名字：", GUILayout.Width(56f));
+                    _renameInput = GUILayout.TextField(_renameInput ?? "", GUILayout.Width(200f));
+                    if (GUILayout.Button("确定", GUILayout.Width(52f)))
+                    {
+                        if (RenameBackup(stamp, _renameInput))
+                        {
+                            _renamingStamp = null;
+                            RefreshBackupList();
+                        }
+                    }
+                    if (GUILayout.Button("取消", GUILayout.Width(52f))) _renamingStamp = null;
+                    GUILayout.EndHorizontal();
+                }
+                else
+                {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label(stamp, GUILayout.ExpandWidth(true));
+                    if (GUILayout.Button("改名", GUILayout.Width(52f)))
+                    {
+                        _renamingStamp = stamp;
+                        _renameInput = stamp;
+                    }
+                    if (GUILayout.Button("恢复", GUILayout.Width(52f))) RestoreBackup(stamp);
+                    GUILayout.EndHorizontal();
+                }
             }
             GUILayout.EndScrollView();
 
-            GUILayout.Label("恢复前会自动备份当前状态；恢复后需重启游戏才生效。");
+            GUILayout.Label("恢复前会自动备份当前状态；恢复后需重启游戏才生效。改名只在备份文件夹内生效，不影响恢复。");
         }
     }
 

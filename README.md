@@ -18,6 +18,7 @@ Project Exhibitionist 的 BepInEx 5 插件：经验倍率、加经验/升级、�
 - **成就**：列出全部成就，显示解锁状态，支持单项解锁与「全部解锁」（走 `AchievementService.Unlock`，不是改注册表）
 - **统计**：跑动距离、步数、被看到次数、游玩时长等 14 项数值，可逐项读写（走 `PlayerStatsService.Data` + `Save()`）
 - **备份与恢复**：一键把 `progression.json / stats.json / missions.json / poi_fast_travel.json` 快照到 `BepInEx\config\PE_XpHelper_Backups\<时间戳>\`，可一键回滚；恢复前会自动先备份当前状态
+  - 支持给备份**改名**（比如「满级前」「全解锁后」），非法文件名字符会自动换成下划线
 
 ## 安装
 
@@ -99,6 +100,7 @@ PE_Trainer v1.4 的 F5–F11 是硬编码在 DLL 里的，改不了；不想让�
 
 ## 更新日志
 
+- **1.5.1**：备份支持改名（面板内点「改名」直接编辑，非法字符自动替换）
 - **1.5.0**：新增「统计」「成就」「备份与恢复」三个页签，「经验与全局」里加金钱栏——把 PE_Trainer v1.4 有而我们没有的功能全部搬进面板，仍然只有 `Insert` 一个热键
 - **1.4.0**：新增「兴趣点传送」页签（移植自 PE_Trainer v1.4 的 F11 面板实现，改为面板内页签，不额外占用热键）
 - **1.3.0**：面板热键改为可配置（`PanelKey`，默认 `Insert`）；修正 README 中「与 Dark Suite 的 F10 不冲突」的错误描述；新增 `tools\Apply-DarkSuiteKeymap.ps1`
