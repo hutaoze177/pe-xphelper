@@ -14,12 +14,13 @@ using UnityEngine.SceneManagement;
 
 namespace PE_XpHelper
 {
-    [BepInPlugin("com.dsh.pe.xphelper", "PE Xp Helper", "1.2.0")]
+    [BepInPlugin("com.dsh.pe.xphelper", "PE Xp Helper", "1.3.0")]
     public class Plugin : BaseUnityPlugin
     {
         internal static ConfigEntry<float> XpMultiplier;
         internal static ConfigEntry<int> GrantStep;
         internal static ConfigEntry<bool> MemoryAllUnlock;
+        internal static ConfigEntry<KeyboardShortcut> PanelKey;
         internal static ManualLogSource Log;
 
         internal static bool SuppressMultiplier;
@@ -37,6 +38,8 @@ namespace PE_XpHelper
             GrantStep = Config.Bind("General", "GrantStep", 100, "“增加经验”按钮每次增加的数值");
             MemoryAllUnlock = Config.Bind("General", "UnlockEverything", false,
                 "临时全解锁（仅内存生效，不写存档；关闭即恢复）");
+            PanelKey = Config.Bind("General", "PanelKey", new KeyboardShortcut(KeyCode.Insert),
+                "打开/关闭面板的快捷键（默认 Insert）。F10 已被 Dark Suite 的 SlowDetection 与部分修改器占用（v1.3.0 起默认改为 Insert），如需换键改此配置即可");
 
             Log.LogInfo("PE Xp Helper 已加载，初始倍率 x" + XpMultiplier.Value.ToString("0.0"));
 
@@ -132,7 +135,7 @@ namespace PE_XpHelper
 
         private void Start()
         {
-            Plugin.Log.LogInfo("宿主已启动，按 F10 打开或关闭面板");
+            Plugin.Log.LogInfo("宿主已启动，按 " + Plugin.PanelKey.Value + " 打开或关闭面板");
         }
 
         private void Update()
@@ -143,7 +146,7 @@ namespace PE_XpHelper
                 Plugin.Log.LogInfo("宿主 Update 运行中");
             }
 
-            if (Input.GetKeyDown(KeyCode.F10)) Toggle("F10");
+            if (Plugin.PanelKey.Value.IsDown()) Toggle(Plugin.PanelKey.Value.ToString());
 
             if (Plugin.PanelVisible)
             {
@@ -279,7 +282,7 @@ namespace PE_XpHelper
             }
 
             GUILayout.Space(8f);
-            GUILayout.Label("F10 开关面板；加经验与永久解锁会立即写入存档。");
+            GUILayout.Label(Plugin.PanelKey.Value + " 开关面板（可在 BepInEx\\config\\com.dsh.pe.xphelper.cfg 修改）；加经验与永久解锁会立即写入存档。");
             GUILayout.Label("提示：用调试方式加分可能使本局排行榜成绩失效。");
         }
 

@@ -1,4 +1,4 @@
-﻿# PE Xp Helper
+# PE Xp Helper
 
 Project Exhibitionist 的 BepInEx 5 插件：经验倍率、加经验/升级、单项解锁（物品 / 场景点 / 段位特权）。
 
@@ -17,13 +17,13 @@ Project Exhibitionist 的 BepInEx 5 插件：经验倍率、加经验/升级、�
 1. 安装 BepInEx 5.4.x（x64）；
 2. 把 `bin\PE_XpHelper.dll` 放进 `BepInEx\plugins\`；
 3. 把 `config\pe_xphelper_names_cn.txt` 放进 `BepInEx\config\`（可选，用于中文物品名）；
-4. 进入游戏后按 **F10** 打开面板。
+4. 进入游戏后按 **Insert** 打开面板（v1.3.0 起默认键；可在 `BepInEx\config\com.dsh.pe.xphelper.cfg` 的 `PanelKey` 改成任意组合键）。
 
 ## 使用说明
 
 - 面板分页：`经验与全局` / `单项解锁`
 - 物品与场景点列表只显示当前已加载的资源，进游戏或切换场景后点「刷新列表」可重新扫描
-- 修改翻译表后，关掉面板再按 F10 重新打开即可生效
+- 修改翻译表后，关掉面板再按面板键重新打开即可生效
 - 加经验与永久解锁会立即写入存档；用调试方式加分可能使本局排行榜成绩失效
 
 ## 编译
@@ -34,11 +34,58 @@ Project Exhibitionist 的 BepInEx 5 插件：经验倍率、加经验/升级、�
 build/build.ps1 -GameDir "X:\path\to\Project Exhibitionist"
 ```
 
+> `bin\PE_XpHelper.dll` 目前仍是 **1.2.0** 的构建产物。1.3.0 只改了源码（热键可配置）与文档，
+> 需在有游戏程序集的机器上执行上面这条命令重新编译后替换 `bin\PE_XpHelper.dll` 才会生效。
+
 ## 兼容性
 
 - Project Exhibitionist v1.5（Unity 2022.3，Mono）
 - BepInEx 5.4.23.6
-- 与 Dark Suite 共存（F10 与 End 不冲突）
+- 面板热键默认 **Insert**，与 Dark Suite 2.6.3、PE_Trainer v1.4 的热键零重叠
+
+## 与其它插件共存
+
+三个插件可以同时装在同一个 BepInEx 下，代码层面无冲突（Harmony 允许多补丁共存，PE_Trainer 不用 Harmony 而走反射），但**热键必须错开**：
+
+| 键 | PE Xp Helper（本插件） | Dark Suite 2.6.3 默认 | PE_Trainer v1.4 |
+|---|---|---|---|
+| F1 / F2 | — | 屏蔽警察 / 新闻组 | — |
+| F3（+Shift） | — | 小地图箭头 / 罗盘 | — |
+| F4 | — | SlowDetection 冻结 | — |
+| F5 / F6 | — | — | 移动速度循环 / 恢复 1x |
+| F7 | — | 小地图 NPC 标记 | 显示隐藏面板 |
+| F8 | — | 无限体力 | 一键解锁全部 + 满级 |
+| F9 | — | SlowDetection 开关 | 金钱 +999999 |
+| F10 | — | SlowDetection 变慢 | 表情锁定 |
+| F11 | — | SlowDetection 变快 | POI 传送 |
+| F12 | — | SlowDetection HUD | — |
+| End / Pause | — | 打开面板 / BossKey | — |
+| **Insert** | **打开面板** | — | — |
+
+注意两点：
+
+- **v1.2.0 及更早版本用 F10，与 Dark Suite 的 `SlowDetection.Slower` 和 PE_Trainer 的表情锁定三者同键**，v1.3.0 起改为 Insert。
+- Dark Suite 的 F7–F11 同样和 PE_Trainer 的 F5–F11 重叠，用 `tools\Apply-DarkSuiteKeymap.ps1` 一键改成 `LeftControl + F7..F11`：
+
+```powershell
+# 先看会改什么
+.\tools\Apply-DarkSuiteKeymap.ps1 -GameDir "D:\path\to\Project Exhibitionist" -DryRun
+
+# 确认后执行（自动备份 com.darksuite.pe.cfg）
+.\tools\Apply-DarkSuiteKeymap.ps1 -GameDir "D:\path\to\Project Exhibitionist"
+```
+
+PE_Trainer v1.4 的 F5–F11 是硬编码在 DLL 里的，改不了；不想让它占键就别装它自带的 `PE_Trainer.dll`，只用它的 exe 界面改存档即可。
+
+另外还有两处非热键的重叠值得注意：
+
+- **移动速度会相乘**：Dark Suite 的 `SpeedTweak` 与 PE_Trainer 的 F5 都改玩家速度，同时开容易飞出去；
+- **存档覆盖**：PE_Trainer 是游戏外改 `GameData\Runtime\*.json` 与注册表，必须完全退出游戏后使用，否则会用它读到的旧快照覆盖你在游戏内刚取得的进度。
+
+## 更新日志
+
+- **1.3.0**：面板热键改为可配置（`PanelKey`，默认 `Insert`）；修正 README 中「与 Dark Suite 的 F10 不冲突」的错误描述；新增 `tools\Apply-DarkSuiteKeymap.ps1`
+- **1.2.0**：XP 倍率、加经验 / 升级、单项解锁、临时全解锁、中文名映射表
 
 ## 免责声明
 
