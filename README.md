@@ -1,6 +1,6 @@
 # PE Xp Helper
 
-Project Exhibitionist 的 BepInEx 5 插件：经验倍率、加经验/升级、单项解锁（物品 / 场景点 / 段位特权）。
+Project Exhibitionist 的 BepInEx 5 插件：经验倍率、加经验/升级、单项解锁（物品 / 场景点 / 段位特权）、兴趣点快速传送。
 
 ## 功能
 
@@ -11,6 +11,9 @@ Project Exhibitionist 的 BepInEx 5 插件：经验倍率、加经验/升级、�
   - 段位特权支持「解锁 / 锁定」双向切换
   - 中文名来自可编辑映射表，未填写的显示英文
 - **临时全解锁**：仅内存生效，不写存档，关闭即恢复
+- **兴趣点快速传送**：列出 POI 目的地（美术馆 / 便利店 / 商场 / 泳池 / 体育场 / 大学等），显示 `[OK]` 已解锁 / `[--]` 未发现与到访次数，点一下直接切场景
+  - 走游戏自身的 `SceneTransitionManager.LoadGameplayScene`，不瞬移坐标，加载流程与正常进出门一致
+  - 目的地表优先读游戏内地图 App 与进度服务的真实数据，读不到时回退到内置清单
 
 ## 安装
 
@@ -21,8 +24,9 @@ Project Exhibitionist 的 BepInEx 5 插件：经验倍率、加经验/升级、�
 
 ## 使用说明
 
-- 面板分页：`经验与全局` / `单项解锁`
+- 面板分页：`经验与全局` / `单项解锁` / `兴趣点传送`
 - 物品与场景点列表只显示当前已加载的资源，进游戏或切换场景后点「刷新列表」可重新扫描
+- 兴趣点传送需要**先进到一个游戏场景**（主菜单里没有 `SceneTransitionManager`），面板会显示「场景管理器：就绪/未就绪」
 - 修改翻译表后，关掉面板再按面板键重新打开即可生效
 - 加经验与永久解锁会立即写入存档；用调试方式加分可能使本局排行榜成绩失效
 
@@ -34,7 +38,7 @@ Project Exhibitionist 的 BepInEx 5 插件：经验倍率、加经验/升级、�
 build/build.ps1 -GameDir "X:\path\to\Project Exhibitionist"
 ```
 
-> `bin\PE_XpHelper.dll` 已用上述命令针对 Project Exhibitionist v1.5 实际编译（v1.3.0，21504 B）。
+> `bin\PE_XpHelper.dll` 已用上述命令针对 Project Exhibitionist v1.5 实际编译（v1.4.0，27648 B）。
 > 换游戏版本后需要重新编译，否则 `Assembly-CSharp` 里的类型/方法签名变化会导致补丁失效。
 
 ## 兼容性
@@ -88,6 +92,7 @@ PE_Trainer v1.4 的 F5–F11 是硬编码在 DLL 里的，改不了；不想让�
 
 ## 更新日志
 
+- **1.4.0**：新增「兴趣点传送」页签（移植自 PE_Trainer v1.4 的 F11 面板实现，改为面板内页签，不额外占用热键）
 - **1.3.0**：面板热键改为可配置（`PanelKey`，默认 `Insert`）；修正 README 中「与 Dark Suite 的 F10 不冲突」的错误描述；新增 `tools\Apply-DarkSuiteKeymap.ps1`
 - **1.2.0**：XP 倍率、加经验 / 升级、单项解锁、临时全解锁、中文名映射表
 

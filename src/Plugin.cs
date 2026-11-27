@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
@@ -14,7 +15,7 @@ using UnityEngine.SceneManagement;
 
 namespace PE_XpHelper
 {
-    [BepInPlugin("com.dsh.pe.xphelper", "PE Xp Helper", "1.3.0")]
+    [BepInPlugin("com.dsh.pe.xphelper", "PE Xp Helper", "1.4.0")]
     public class Plugin : BaseUnityPlugin
     {
         internal static ConfigEntry<float> XpMultiplier;
@@ -94,7 +95,7 @@ namespace PE_XpHelper
 
     public class XpHost : MonoBehaviour
     {
-        private enum MainTab { General, Single }
+        private enum MainTab { General, Single, Travel }
         private enum UnlockCategory { Items, Pois, RankUnlocks }
 
         private static Font _font;
@@ -116,6 +117,12 @@ namespace PE_XpHelper
         private List<PoiEntry> _pois;
         private RankUnlock[] _rankUnlocks;
 
+        // ---- 兴趣点传送 ----
+        private List<TravelPoi> _travelPois;
+        private string _travelSearch = "";
+        private Vector2 _travelScroll;
+        private string _travelStatus = "";
+
         private static Dictionary<string, string> _nameCn;
         private static bool _nameCnLoaded;
         private static bool _namesDumped;
@@ -134,6 +141,16 @@ namespace PE_XpHelper
             public string Label;
             public string SearchKey;
             public bool Unlocked;
+        }
+
+        /// <summary>兴趣点快速传送的目的地（移植自 PE_Trainer 的 POI 传送）。</summary>
+        private sealed class TravelPoi
+        {
+            public string Scene;
+            public string Label;
+            public string District;
+            public bool Unlocked;
+            public int Visits;
         }
 
         private void Start()
@@ -227,12 +244,21 @@ namespace PE_XpHelper
                         if (_items == null) RefreshUnlockCache();
                     }
                 }
+                if (GUILayout.Toggle(_tab == MainTab.Travel, "兴趣点传送", "Button"))
+                {
+                    if (_tab != MainTab.Travel)
+                    {
+                        _tab = MainTab.Travel;
+                        if (_travelPois == null) RefreshTravelList();
+                    }
+                }
                 GUILayout.EndHorizontal();
 
                 GUILayout.Space(6f);
 
                 if (_tab == MainTab.General) DrawGeneralTab();
-                else DrawSingleTab();
+                else if (_tab == MainTab.Single) DrawSingleTab();
+                else DrawTravelTab();
             }
             catch (Exception ex)
             {
@@ -736,6 +762,250 @@ namespace PE_XpHelper
             catch (Exception ex)
             {
                 Plugin.Log.LogError("永久解锁失败: " + ex);
+            }
+        }
+
+        // ---------------- 兴趣点快速传送（移植自 PE_Trainer v1.4 的 F11 面板） ----------------
+
+        private void DrawTravelTab()
+        {
+            if (_travelPois == null) RefreshTravelList();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("搜索：", GUILayout.Width(46f));
+            _travelSearch = GUILayout.TextField(_travelSearch ?? "", GUILayout.ExpandWidth(true));
+            if (GUILayout.Button("清空", GUILayout.Width(46f))) _travelSearch = "";
+            if (GUILayout.Button("刷新", GUILayout.Width(52f))) RefreshTravelList();
+            GUILayout.EndHorizontal();
+
+            bool ready = GetTransitionManager() != null;
+            GUILayout.Label(ready
+                ? "场景管理器：就绪（共 " + _travelPois.Count + " 个目的地）"
+                : "场景管理器：未就绪——请先进游戏场景（主菜单里没有）");
+
+            if (!string.IsNullOrEmpty(_travelStatus)) GUILayout.Label(_travelStatus);
+
+            string filter = (_travelSearch ?? "").Trim().ToLowerInvariant();
+            _travelScroll = GUILayout.BeginScrollView(_travelScroll, GUILayout.ExpandHeight(true));
+
+            int shown = 0;
+            for (int i = 0; i < _travelPois.Count; i++)
+            {
+                TravelPoi p = _travelPois[i];
+                if (filter.Length > 0)
+                {
+                    string hay = ((p.Label ?? "") + " " + (p.Scene ?? "") + " " + (p.District ?? "")).ToLowerInvariant();
+                    if (hay.IndexOf(filter, StringComparison.Ordinal) < 0) continue;
+                }
+
+                shown++;
+                GUILayout.BeginHorizontal();
+                GUILayout.Label(
+                    (p.Unlocked ? "[OK] " : "[--] ") + p.Label +
+                    (string.IsNullOrEmpty(p.District) ? "" : "　(" + p.District + ")") +
+                    (p.Visits > 0 ? "　x" + p.Visits : ""),
+                    GUILayout.ExpandWidth(true));
+                if (GUILayout.Button("传送", GUILayout.Width(56f))) TravelTo(p.Scene, true);
+                GUILayout.EndHorizontal();
+            }
+
+            if (shown == 0) GUILayout.Label("没有匹配的兴趣点。");
+            GUILayout.EndScrollView();
+
+            GUILayout.Label("[OK] 已解锁 / [--] 未发现（未解锁也可能传送成功）");
+        }
+
+        private void RefreshTravelList()
+        {
+            _travelPois = new List<TravelPoi>();
+            HashSet<string> seen = new HashSet<string>();
+
+            try
+            {
+                // ① 游戏内地图 App 的目的地表
+                Type mapsApp = Type.GetType("Features.CielOS.Apps.Maps.CielOSMapsApp, Assembly-CSharp");
+                if (mapsApp != null)
+                {
+                    FieldInfo f = mapsApp.GetField("Destinations", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                    Array arr = f != null ? f.GetValue(null) as Array : null;
+                    if (arr != null)
+                    {
+                        foreach (object o in arr)
+                        {
+                            if (o == null) continue;
+                            AddTravelPoi(seen,
+                                GetMember(o, "SceneName") as string,
+                                GetMember(o, "DisplayName") as string,
+                                GetMember(o, "District") as string);
+                        }
+                    }
+                }
+
+                // ② 进度服务记录的已知场景
+                if (_travelPois.Count == 0)
+                {
+                    Type svc = Type.GetType("Features.CielOS.Apps.Maps.PoiFastTravelProgressService, Assembly-CSharp");
+                    FieldInfo f2 = svc != null
+                        ? svc.GetField("KnownScenes", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+                        : null;
+                    string[] known = f2 != null ? f2.GetValue(null) as string[] : null;
+                    if (known != null)
+                    {
+                        for (int i = 0; i < known.Length; i++) AddTravelPoi(seen, known[i], null, null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning("兴趣点列表读取失败，改用内置清单: " + ex.Message);
+            }
+
+            // ③ 兜底：固定清单
+            string[] fallback =
+            {
+                "POI - Art Gallery", "POI - Kombini", "POI - Mall",
+                "POI - Pool", "POI - Stadium", "POI - University"
+            };
+            for (int i = 0; i < fallback.Length; i++) AddTravelPoi(seen, fallback[i], null, null);
+
+            _travelPois.Sort((a, b) => string.Compare(a.Label, b.Label, StringComparison.OrdinalIgnoreCase));
+            Plugin.Log.LogInfo("兴趣点传送列表已刷新：" + _travelPois.Count + " 个目的地");
+        }
+
+        private void AddTravelPoi(HashSet<string> seen, string scene, string label, string district)
+        {
+            if (string.IsNullOrEmpty(scene) || seen.Contains(scene)) return;
+            seen.Add(scene);
+
+            TravelPoi p = new TravelPoi();
+            p.Scene = scene;
+            p.Label = string.IsNullOrEmpty(label) ? PrettifyScene(scene) : label;
+            p.District = district;
+
+            try
+            {
+                Type svc = Type.GetType("Features.CielOS.Apps.Maps.PoiFastTravelProgressService, Assembly-CSharp");
+                if (svc != null)
+                {
+                    MethodInfo m1 = svc.GetMethod("IsDestinationUnlocked", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                    if (m1 != null)
+                    {
+                        object r = m1.Invoke(null, new object[] { scene });
+                        if (r is bool) p.Unlocked = (bool)r;
+                    }
+
+                    MethodInfo m2 = svc.GetMethod("GetVisitCount", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                    if (m2 != null)
+                    {
+                        object r2 = m2.Invoke(null, new object[] { scene });
+                        if (r2 is int) p.Visits = (int)r2;
+                    }
+                }
+            }
+            catch
+            {
+                // 解锁状态读不到不影响传送
+            }
+
+            _travelPois.Add(p);
+        }
+
+        private static string PrettifyScene(string scene)
+        {
+            string t = scene ?? "";
+            if (t.StartsWith("POI - ")) t = t.Substring(6);
+            return t.Replace('_', ' ');
+        }
+
+        private static object GetMember(object obj, string name)
+        {
+            if (obj == null) return null;
+            Type t = obj.GetType();
+            FieldInfo f = t.GetField(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (f != null) return f.GetValue(obj);
+            PropertyInfo p = t.GetProperty(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            return p != null ? p.GetValue(obj, null) : null;
+        }
+
+        private static object GetTransitionManager()
+        {
+            Type t = Type.GetType("ProjectExhibitionist.Core.SceneManagement.SceneTransitionManager, Assembly-CSharp");
+            if (t == null) return null;
+
+            PropertyInfo prop = t.GetProperty("Instance", BindingFlags.Static | BindingFlags.Public);
+            object o = prop != null ? prop.GetValue(null, null) : null;
+            if (o == null) o = UnityEngine.Object.FindObjectOfType(t);
+            return o;
+        }
+
+        private static Transform GetPlayerTransform()
+        {
+            Type t = Type.GetType("Invector.vCharacterController.vThirdPersonController, Assembly-CSharp");
+            if (t == null) return null;
+            object o = UnityEngine.Object.FindObjectOfType(t);
+            Component c = o as Component;
+            return c != null ? c.transform : null;
+        }
+
+        private void TravelTo(string sceneName, bool recordVisit)
+        {
+            Type mgrType = Type.GetType("ProjectExhibitionist.Core.SceneManagement.SceneTransitionManager, Assembly-CSharp");
+            object mgr = GetTransitionManager();
+            MethodInfo load = mgrType != null
+                ? mgrType.GetMethod("LoadGameplayScene",
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                    null, new Type[] { typeof(string) }, null)
+                : null;
+
+            if (mgr == null || load == null)
+            {
+                _travelStatus = "传送失败：场景管理器未就绪，请先进游戏场景。";
+                Plugin.Log.LogWarning("兴趣点传送：管理器或方法缺失");
+                return;
+            }
+
+            if (recordVisit) RecordPoiVisit(sceneName);
+
+            try
+            {
+                load.Invoke(mgr, new object[] { sceneName });
+                _travelStatus = "正在传送 → " + PrettifyScene(sceneName);
+                Plugin.Log.LogInfo("兴趣点传送 → " + sceneName);
+
+                // 传送后收起面板并恢复光标
+                Plugin.PanelVisible = false;
+                Cursor.visible = _prevCursorVisible;
+                Cursor.lockState = _prevCursorLockState;
+            }
+            catch (Exception ex)
+            {
+                _travelStatus = "传送失败：" + ex.Message;
+                Plugin.Log.LogError("兴趣点传送失败: " + ex);
+            }
+        }
+
+        private void RecordPoiVisit(string destScene)
+        {
+            try
+            {
+                Type stateT = Type.GetType("ProjectExhibitionist.PoiTravel.PoiTravelState, Assembly-CSharp");
+                Type originT = Type.GetType("ProjectExhibitionist.PoiTravel.PoiTravelOrigin, Assembly-CSharp");
+                if (stateT == null || originT == null) return;
+
+                MethodInfo begin = stateT.GetMethod("BeginVisit", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                if (begin == null) return;
+
+                Transform pt = GetPlayerTransform();
+                Vector3 pos = pt != null ? pt.position : Vector3.zero;
+                Quaternion rot = pt != null ? pt.rotation : Quaternion.identity;
+                string fromScene = pt != null ? pt.gameObject.scene.name : SceneManager.GetActiveScene().name;
+
+                object origin = Enum.Parse(originT, "HomeFastTravel");
+                begin.Invoke(null, new object[] { fromScene, pos, rot, origin, destScene, "" });
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning("记录 POI 来路失败（不影响传送）: " + ex.Message);
             }
         }
     }
