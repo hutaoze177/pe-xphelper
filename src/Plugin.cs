@@ -15,7 +15,7 @@ using UnityEngine.SceneManagement;
 
 namespace PE_XpHelper
 {
-    [BepInPlugin("com.dsh.pe.xphelper", "PE Xp Helper", "1.4.0")]
+    [BepInPlugin("com.dsh.pe.xphelper", "PE Xp Helper", "1.5.0")]
     public class Plugin : BaseUnityPlugin
     {
         internal static ConfigEntry<float> XpMultiplier;
@@ -95,14 +95,14 @@ namespace PE_XpHelper
 
     public class XpHost : MonoBehaviour
     {
-        private enum MainTab { General, Single, Travel }
+        private enum MainTab { General, Single, Travel, Stats, Achievements, Backup }
         private enum UnlockCategory { Items, Pois, RankUnlocks }
 
         private static Font _font;
         private static bool _fontTried;
         private static int _lastToggleFrame = -1;
 
-        private Rect _windowRect = new Rect(60f, 60f, 560f, 540f);
+        private Rect _windowRect = new Rect(60f, 60f, 660f, 580f);
         private bool _started;
         private bool _prevCursorVisible;
         private CursorLockMode _prevCursorLockState;
@@ -122,6 +122,40 @@ namespace PE_XpHelper
         private string _travelSearch = "";
         private Vector2 _travelScroll;
         private string _travelStatus = "";
+
+        // ---- 金钱 ----
+        private string _moneyInput = "999999";
+        private int _moneyCurrent = -1;
+        private string _moneyStatus = "";
+
+        // ---- 统计 ----
+        private sealed class StatField
+        {
+            public string Field;
+            public string Label;
+            public bool IsFloat;
+            public string Value;
+        }
+        private List<StatField> _statFields;
+        private Vector2 _statScroll;
+        private string _statStatus = "";
+
+        // ---- 成就 ----
+        private sealed class AchievementEntry
+        {
+            public string Id;
+            public string Label;
+            public bool Unlocked;
+        }
+        private List<AchievementEntry> _achievements;
+        private string _achSearch = "";
+        private Vector2 _achScroll;
+        private string _achStatus = "";
+
+        // ---- 备份与恢复 ----
+        private List<string> _backups;
+        private Vector2 _backupScroll;
+        private string _backupStatus = "";
 
         private static Dictionary<string, string> _nameCn;
         private static bool _nameCnLoaded;
@@ -253,13 +287,40 @@ namespace PE_XpHelper
                         if (_travelPois == null) RefreshTravelList();
                     }
                 }
+                if (GUILayout.Toggle(_tab == MainTab.Stats, "统计", "Button"))
+                {
+                    if (_tab != MainTab.Stats)
+                    {
+                        _tab = MainTab.Stats;
+                        LoadStatsFields();
+                    }
+                }
+                if (GUILayout.Toggle(_tab == MainTab.Achievements, "成就", "Button"))
+                {
+                    if (_tab != MainTab.Achievements)
+                    {
+                        _tab = MainTab.Achievements;
+                        if (_achievements == null) RefreshAchievementList();
+                    }
+                }
+                if (GUILayout.Toggle(_tab == MainTab.Backup, "备份与恢复", "Button"))
+                {
+                    if (_tab != MainTab.Backup)
+                    {
+                        _tab = MainTab.Backup;
+                        RefreshBackupList();
+                    }
+                }
                 GUILayout.EndHorizontal();
 
                 GUILayout.Space(6f);
 
                 if (_tab == MainTab.General) DrawGeneralTab();
                 else if (_tab == MainTab.Single) DrawSingleTab();
-                else DrawTravelTab();
+                else if (_tab == MainTab.Travel) DrawTravelTab();
+                else if (_tab == MainTab.Stats) DrawStatsTab();
+                else if (_tab == MainTab.Achievements) DrawAchievementsTab();
+                else DrawBackupTab();
             }
             catch (Exception ex)
             {
@@ -314,6 +375,98 @@ namespace PE_XpHelper
             GUILayout.Space(8f);
             GUILayout.Label(Plugin.PanelKey.Value + " 开关面板（可在 BepInEx\\config\\com.dsh.pe.xphelper.cfg 修改）；加经验与永久解锁会立即写入存档。");
             GUILayout.Label("提示：用调试方式加分可能使本局排行榜成绩失效。");
+
+            DrawMoneySection();
+        }
+
+        // ---------------- 金钱 ----------------
+
+        private void DrawMoneySection()
+        {
+            GUILayout.Space(10f);
+            GUILayout.Label("—— 金钱 ——");
+
+            if (_moneyCurrent < 0) _moneyCurrent = ReadBankBalance();
+            GUILayout.Label(_moneyCurrent >= 0 ? "银行余额：" + _moneyCurrent : "银行余额：未找到 MoneyManager（需在游戏场景内）");
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("设为：", GUILayout.Width(44f));
+            _moneyInput = GUILayout.TextField(_moneyInput ?? "", GUILayout.Width(120f));
+            if (GUILayout.Button("应用", GUILayout.Width(56f)))
+            {
+                int v;
+                if (!int.TryParse((_moneyInput ?? "").Trim(), out v))
+                {
+                    _moneyStatus = "请输入整数。";
+                }
+                else if (SetBankBalance(v))
+                {
+                    _moneyCurrent = v;
+                    _moneyStatus = "已设为 " + v + "（已保存）";
+                }
+                else
+                {
+                    _moneyStatus = "设置失败：MoneyManager 未就绪。";
+                }
+            }
+            if (GUILayout.Button("+10 万", GUILayout.Width(62f)))
+            {
+                if (SetBankBalance(Math.Max(0, ReadBankBalance()) + 100000)) { _moneyCurrent = ReadBankBalance(); _moneyStatus = "已加 10 万"; }
+            }
+            if (GUILayout.Button("刷新", GUILayout.Width(52f))) { _moneyCurrent = ReadBankBalance(); _moneyStatus = ""; }
+            GUILayout.EndHorizontal();
+
+            if (!string.IsNullOrEmpty(_moneyStatus)) GUILayout.Label(_moneyStatus);
+        }
+
+        private static Type MoneyType()
+        {
+            return Type.GetType("ProjektSumperk.MoneyManager, Assembly-CSharp");
+        }
+
+        private static object FindMoneyManager()
+        {
+            Type t = MoneyType();
+            return t == null ? null : UnityEngine.Object.FindObjectOfType(t);
+        }
+
+        private int ReadBankBalance()
+        {
+            try
+            {
+                object mgr = FindMoneyManager();
+                if (mgr == null) return -1;
+                FieldInfo f = mgr.GetType().GetField("BankBalance", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                if (f == null) return -1;
+                object v = f.GetValue(mgr);
+                return v is int ? (int)v : -1;
+            }
+            catch { return -1; }
+        }
+
+        private bool SetBankBalance(int value)
+        {
+            try
+            {
+                object mgr = FindMoneyManager();
+                if (mgr == null) return false;
+                Type t = mgr.GetType();
+                FieldInfo f = t.GetField("BankBalance", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                if (f == null) return false;
+                f.SetValue(mgr, value);
+
+                // 走游戏自己的保存流程，避免下次读档被覆盖
+                MethodInfo save = t.GetMethod("SaveTransactionData", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                if (save != null) save.Invoke(mgr, null);
+
+                Plugin.Log.LogInfo("银行余额已设为 " + value);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning("设置金钱失败: " + ex.Message);
+                return false;
+            }
         }
 
         // ---------------- 单项解锁 ----------------
@@ -1012,6 +1165,460 @@ namespace PE_XpHelper
             {
                 Plugin.Log.LogWarning("记录 POI 来路失败（不影响传送）: " + ex.Message);
             }
+        }
+
+        // ---------------- 统计 ----------------
+
+        private static readonly string[] StatIntFields =
+        {
+            "runsPlayed", "totalTimesSeen", "totalEmotes", "totalLocationsVisited",
+            "bestLocationsVisitedInRun", "totalCarSurfs", "totalSteps"
+        };
+
+        private static readonly string[] StatFloatFields =
+        {
+            "totalDistanceMeters", "bestDistanceMeters", "totalVehicleDistanceMeters",
+            "totalWalkingMeters", "totalRunningMeters", "totalPlayTimeSeconds", "totalActiveGameplaySeconds"
+        };
+
+        private static Type StatsServiceType()
+        {
+            return Type.GetType("Features.MatchRecap.PlayerStatsService, Assembly-CSharp");
+        }
+
+        private static object GetStatsData()
+        {
+            try
+            {
+                Type t = StatsServiceType();
+                if (t == null) return null;
+
+                PropertyInfo p = t.GetProperty("Data", BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                if (p != null)
+                {
+                    try { return p.GetValue(null, null); } catch { }
+                    try
+                    {
+                        object inst = UnityEngine.Object.FindObjectOfType(t);
+                        if (inst != null) return p.GetValue(inst, null);
+                    }
+                    catch { }
+                }
+
+                MethodInfo snap = t.GetMethod("GetSnapshot", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                if (snap != null)
+                {
+                    try { return snap.Invoke(null, null); } catch { }
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning("读取统计数据失败: " + ex.Message);
+            }
+            return null;
+        }
+
+        private static bool SaveStats()
+        {
+            try
+            {
+                Type t = StatsServiceType();
+                MethodInfo m = t != null
+                    ? t.GetMethod("Save", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+                    : null;
+                if (m == null) return false;
+                m.Invoke(null, null);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning("保存统计数据失败: " + ex.Message);
+                return false;
+            }
+        }
+
+        private void LoadStatsFields()
+        {
+            _statFields = new List<StatField>();
+            object data = GetStatsData();
+            if (data == null)
+            {
+                _statStatus = "读不到统计数据（需在游戏场景内，且 PlayerStatsService 已加载）。";
+                return;
+            }
+            _statStatus = "";
+
+            for (int i = 0; i < StatIntFields.Length; i++)
+            {
+                StatField f = new StatField();
+                f.Field = StatIntFields[i];
+                f.Label = f.Field;
+                f.IsFloat = false;
+                object v = GetMember(data, f.Field);
+                f.Value = v == null ? "0" : Convert.ToInt64(v).ToString();
+                _statFields.Add(f);
+            }
+
+            for (int i = 0; i < StatFloatFields.Length; i++)
+            {
+                StatField f = new StatField();
+                f.Field = StatFloatFields[i];
+                f.Label = f.Field;
+                f.IsFloat = true;
+                object v = GetMember(data, f.Field);
+                f.Value = v == null ? "0" : Convert.ToSingle(v).ToString("0.##");
+                _statFields.Add(f);
+            }
+        }
+
+        private void DrawStatsTab()
+        {
+            if (_statFields == null) LoadStatsFields();
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("刷新", GUILayout.Width(56f))) LoadStatsFields();
+            if (GUILayout.Button("填入高数值（不写入，需点应用）", GUILayout.Width(240f)))
+            {
+                if (_statFields != null)
+                {
+                    for (int i = 0; i < _statFields.Count; i++)
+                    {
+                        _statFields[i].Value = _statFields[i].IsFloat ? "999999" : "99999";
+                    }
+                }
+            }
+            GUILayout.EndHorizontal();
+
+            if (!string.IsNullOrEmpty(_statStatus)) GUILayout.Label(_statStatus);
+
+            if (_statFields == null || _statFields.Count == 0)
+            {
+                GUILayout.Label("没有可用的统计字段。");
+                return;
+            }
+
+            _statScroll = GUILayout.BeginScrollView(_statScroll, GUILayout.ExpandHeight(true));
+            for (int i = 0; i < _statFields.Count; i++)
+            {
+                StatField f = _statFields[i];
+                GUILayout.BeginHorizontal();
+                GUILayout.Label(f.Label, GUILayout.Width(210f));
+                f.Value = GUILayout.TextField(f.Value ?? "", GUILayout.Width(110f));
+                if (GUILayout.Button("应用", GUILayout.Width(52f)))
+                {
+                    object data = GetStatsData();
+                    if (data == null) { _statStatus = "统计数据未就绪。"; }
+                    else
+                    {
+                        try
+                        {
+                            FieldInfo fi = data.GetType().GetField(f.Field, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                            if (fi == null) { _statStatus = "找不到字段 " + f.Field; }
+                            else
+                            {
+                                if (f.IsFloat) fi.SetValue(data, float.Parse(f.Value));
+                                else fi.SetValue(data, int.Parse(f.Value));
+
+                                if (SaveStats()) _statStatus = "已写入 " + f.Field + "（已保存）";
+                                else _statStatus = "已写入 " + f.Field + "，但保存失败（可能下次读档被覆盖）";
+                            }
+                        }
+                        catch (Exception ex) { _statStatus = "写入失败：" + ex.Message; }
+                    }
+                }
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.EndScrollView();
+
+            GUILayout.Label("提示：统计写的是 PlayerStatsService.Data，点「应用」后调 Save() 落盘。");
+        }
+
+        // ---------------- 成就 ----------------
+
+        private void RefreshAchievementList()
+        {
+            _achievements = new List<AchievementEntry>();
+            try
+            {
+                Type idsT = Type.GetType("Features.Achievements.AchievementIds, Assembly-CSharp");
+                Type svcT = Type.GetType("Features.Achievements.AchievementService, Assembly-CSharp");
+
+                object all = null;
+                if (idsT != null)
+                {
+                    PropertyInfo p = idsT.GetProperty("All", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                    if (p != null) all = p.GetValue(null, null);
+                }
+
+                if (all != null)
+                {
+                    foreach (object id in (System.Collections.IEnumerable)all)
+                    {
+                        if (id == null) continue;
+                        AchievementEntry e = new AchievementEntry();
+                        e.Id = id.ToString();
+                        e.Label = Cn(e.Id);
+                        e.Unlocked = QueryAchievementUnlocked(svcT, e.Id);
+                        _achievements.Add(e);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning("读取成就列表失败: " + ex.Message);
+            }
+
+            _achievements.Sort((a, b) => string.Compare(a.Id, b.Id, StringComparison.OrdinalIgnoreCase));
+            Plugin.Log.LogInfo("成就列表已刷新：" + _achievements.Count + " 项");
+        }
+
+        private static bool QueryAchievementUnlocked(Type svcT, string id)
+        {
+            try
+            {
+                MethodInfo m = svcT != null
+                    ? svcT.GetMethod("IsLocallyUnlocked", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+                    : null;
+                if (m == null) return false;
+                object r = m.Invoke(null, new object[] { id });
+                return r is bool && (bool)r;
+            }
+            catch { return false; }
+        }
+
+        private static bool UnlockAchievement(string id)
+        {
+            try
+            {
+                Type svcT = Type.GetType("Features.Achievements.AchievementService, Assembly-CSharp");
+                MethodInfo m = svcT != null
+                    ? svcT.GetMethod("Unlock", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+                    : null;
+                if (m == null) return false;
+                object r = m.Invoke(null, new object[] { id });
+                return !(r is bool) || (bool)r;
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogWarning("解锁成就失败 " + id + ": " + ex.Message);
+                return false;
+            }
+        }
+
+        private void DrawAchievementsTab()
+        {
+            if (_achievements == null) RefreshAchievementList();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("搜索：", GUILayout.Width(46f));
+            _achSearch = GUILayout.TextField(_achSearch ?? "", GUILayout.ExpandWidth(true));
+            if (GUILayout.Button("清空", GUILayout.Width(46f))) _achSearch = "";
+            if (GUILayout.Button("刷新", GUILayout.Width(52f))) RefreshAchievementList();
+            if (GUILayout.Button("全部解锁", GUILayout.Width(80f)))
+            {
+                int n = 0;
+                for (int i = 0; i < _achievements.Count; i++)
+                {
+                    if (_achievements[i].Unlocked) continue;
+                    if (UnlockAchievement(_achievements[i].Id)) { _achievements[i].Unlocked = true; n++; }
+                }
+                _achStatus = "已解锁 " + n + " 项成就";
+            }
+            GUILayout.EndHorizontal();
+
+            if (!string.IsNullOrEmpty(_achStatus)) GUILayout.Label(_achStatus);
+
+            if (_achievements.Count == 0)
+            {
+                GUILayout.Label("没有读到成就 ID（AchievementIds.All 为空）。");
+                return;
+            }
+
+            int unlocked = 0;
+            for (int i = 0; i < _achievements.Count; i++) if (_achievements[i].Unlocked) unlocked++;
+            GUILayout.Label("已解锁 " + unlocked + " / " + _achievements.Count);
+
+            string filter = (_achSearch ?? "").Trim().ToLowerInvariant();
+            _achScroll = GUILayout.BeginScrollView(_achScroll, GUILayout.ExpandHeight(true));
+            for (int i = 0; i < _achievements.Count; i++)
+            {
+                AchievementEntry e = _achievements[i];
+                if (filter.Length > 0 && (e.Id ?? "").ToLowerInvariant().IndexOf(filter, StringComparison.Ordinal) < 0) continue;
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label((e.Unlocked ? "[OK] " : "[--] ") + e.Id, GUILayout.ExpandWidth(true));
+                if (!e.Unlocked)
+                {
+                    if (GUILayout.Button("解锁", GUILayout.Width(56f)))
+                    {
+                        if (UnlockAchievement(e.Id)) { e.Unlocked = true; _achStatus = "已解锁 " + e.Id; }
+                        else _achStatus = "解锁失败 " + e.Id;
+                    }
+                }
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.EndScrollView();
+        }
+
+        // ---------------- 备份与恢复 ----------------
+
+        private static readonly string[] SaveFiles =
+        {
+            "progression.json", "stats.json", "missions.json", "poi_fast_travel.json"
+        };
+
+        private static string SaveDir()
+        {
+            string localApp = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string localLow = System.IO.Path.GetFullPath(System.IO.Path.Combine(localApp, "..", "LocalLow"));
+            return System.IO.Path.Combine(localLow, "JoystickyLabs\\Project Exhibitionist\\ProjectExhibitionist\\GameData\\Runtime");
+        }
+
+        private static string BackupRoot()
+        {
+            // 放插件配置目录下，不污染存档目录
+            return System.IO.Path.Combine(BepInEx.Paths.ConfigPath, "PE_XpHelper_Backups");
+        }
+
+        private void RefreshBackupList()
+        {
+            _backups = new List<string>();
+            try
+            {
+                string root = BackupRoot();
+                if (System.IO.Directory.Exists(root))
+                {
+                    string[] dirs = System.IO.Directory.GetDirectories(root);
+                    Array.Sort(dirs);
+                    Array.Reverse(dirs);
+                    for (int i = 0; i < dirs.Length; i++) _backups.Add(System.IO.Path.GetFileName(dirs[i]));
+                }
+                _backupStatus = _backups.Count + " 份备份";
+            }
+            catch (Exception ex)
+            {
+                _backupStatus = "读取备份列表失败：" + ex.Message;
+            }
+        }
+
+        private void BackupNow()
+        {
+            try
+            {
+                string src = SaveDir();
+                if (!System.IO.Directory.Exists(src))
+                {
+                    _backupStatus = "存档目录不存在：" + src;
+                    return;
+                }
+
+                string dir = System.IO.Path.Combine(BackupRoot(), DateTime.Now.ToString("yyyyMMdd_HHmmss"));
+                System.IO.Directory.CreateDirectory(dir);
+
+                int n = 0;
+                for (int i = 0; i < SaveFiles.Length; i++)
+                {
+                    string f = System.IO.Path.Combine(src, SaveFiles[i]);
+                    if (!System.IO.File.Exists(f)) continue;
+                    System.IO.File.Copy(f, System.IO.Path.Combine(dir, SaveFiles[i]), true);
+                    n++;
+                }
+
+                Plugin.Log.LogInfo("已备份 " + n + " 个存档文件到 " + dir);
+                RefreshBackupList();
+                _backupStatus = "已备份 " + n + " 个文件 → " + System.IO.Path.GetFileName(dir);
+            }
+            catch (Exception ex)
+            {
+                _backupStatus = "备份失败：" + ex.Message;
+                Plugin.Log.LogError("备份失败: " + ex);
+            }
+        }
+
+        private void RestoreBackup(string stamp)
+        {
+            try
+            {
+                string dir = System.IO.Path.Combine(BackupRoot(), stamp);
+                if (!System.IO.Directory.Exists(dir))
+                {
+                    _backupStatus = "备份不存在：" + stamp;
+                    return;
+                }
+
+                string dst = SaveDir();
+                if (!System.IO.Directory.Exists(dst))
+                {
+                    _backupStatus = "存档目录不存在：" + dst;
+                    return;
+                }
+
+                // 覆盖前先把当前状态留一份
+                BackupNow();
+
+                int n = 0;
+                for (int i = 0; i < SaveFiles.Length; i++)
+                {
+                    string f = System.IO.Path.Combine(dir, SaveFiles[i]);
+                    if (!System.IO.File.Exists(f)) continue;
+                    System.IO.File.Copy(f, System.IO.Path.Combine(dst, SaveFiles[i]), true);
+                    n++;
+                }
+
+                Plugin.Log.LogInfo("已从 " + stamp + " 恢复 " + n + " 个文件");
+                _backupStatus = "已恢复 " + n + " 个文件 · 请重启游戏让存档生效";
+            }
+            catch (Exception ex)
+            {
+                _backupStatus = "恢复失败：" + ex.Message;
+                Plugin.Log.LogError("恢复失败: " + ex);
+            }
+        }
+
+        private void DrawBackupTab()
+        {
+            if (_backups == null) RefreshBackupList();
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("立即备份", GUILayout.Width(90f))) BackupNow();
+            if (GUILayout.Button("刷新", GUILayout.Width(56f))) RefreshBackupList();
+            if (GUILayout.Button("打开备份文件夹", GUILayout.Width(130f)))
+            {
+                try
+                {
+                    string root = BackupRoot();
+                    System.IO.Directory.CreateDirectory(root);
+                    System.Diagnostics.Process.Start("explorer.exe", "\"" + root + "\"");
+                }
+                catch (Exception ex)
+                {
+                    _backupStatus = "打开失败：" + ex.Message;
+                }
+            }
+            GUILayout.EndHorizontal();
+
+            if (!string.IsNullOrEmpty(_backupStatus)) GUILayout.Label(_backupStatus);
+
+            GUILayout.Label("存档目录：" + SaveDir());
+
+            if (_backups == null || _backups.Count == 0)
+            {
+                GUILayout.Label("还没有备份，点「立即备份」创建第一份。");
+                return;
+            }
+
+            _backupScroll = GUILayout.BeginScrollView(_backupScroll, GUILayout.ExpandHeight(true));
+            for (int i = 0; i < _backups.Count; i++)
+            {
+                string stamp = _backups[i];
+                GUILayout.BeginHorizontal();
+                GUILayout.Label(stamp, GUILayout.ExpandWidth(true));
+                if (GUILayout.Button("恢复", GUILayout.Width(56f))) RestoreBackup(stamp);
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.EndScrollView();
+
+            GUILayout.Label("恢复前会自动备份当前状态；恢复后需重启游戏才生效。");
         }
     }
 

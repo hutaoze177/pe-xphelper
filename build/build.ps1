@@ -1,4 +1,4 @@
-﻿param(
+param(
     [Parameter(Mandatory=$true)][string]$GameDir
 )
 $ErrorActionPreference = 'Stop'
@@ -11,6 +11,7 @@ if (-not (Test-Path -LiteralPath $csc)) { throw '找不到 Roslyn csc.dll，请�
 $m = Join-Path $GameDir 'Project Exhibitionist_Data\Managed'
 $refs = @(
     (Join-Path $m 'mscorlib.dll'), (Join-Path $m 'netstandard.dll'), (Join-Path $m 'System.Core.dll'),
+    (Join-Path $m 'System.dll'),
     (Join-Path $GameDir 'BepInEx\core\BepInEx.dll'), (Join-Path $GameDir 'BepInEx\core\0Harmony.dll'),
     (Join-Path $m 'UnityEngine.dll'), (Join-Path $m 'UnityEngine.CoreModule.dll'),
     (Join-Path $m 'UnityEngine.IMGUIModule.dll'), (Join-Path $m 'UnityEngine.InputLegacyModule.dll'),
