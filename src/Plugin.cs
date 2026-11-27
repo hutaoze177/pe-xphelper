@@ -15,7 +15,7 @@ using UnityEngine.SceneManagement;
 
 namespace PE_XpHelper
 {
-    [BepInPlugin("com.dsh.pe.xphelper", "PE Xp Helper", "1.5.1")]
+    [BepInPlugin("com.dsh.pe.xphelper", "PE Xp Helper", "1.5.2")]
     public class Plugin : BaseUnityPlugin
     {
         internal static ConfigEntry<float> XpMultiplier;
@@ -1183,6 +1183,82 @@ namespace PE_XpHelper
             "totalWalkingMeters", "totalRunningMeters", "totalPlayTimeSeconds", "totalActiveGameplaySeconds"
         };
 
+        private static readonly Dictionary<string, string> StatLabels = new Dictionary<string, string>
+        {
+            { "runsPlayed", "游玩局数" },
+            { "totalTimesSeen", "被看到次数" },
+            { "totalEmotes", "表情次数" },
+            { "totalLocationsVisited", "到访地点数" },
+            { "bestLocationsVisitedInRun", "单局最多到访地点" },
+            { "totalCarSurfs", "搭车次数" },
+            { "totalSteps", "总步数" },
+            { "totalDistanceMeters", "总距离（米）" },
+            { "bestDistanceMeters", "最佳距离（米）" },
+            { "totalVehicleDistanceMeters", "载具距离（米）" },
+            { "totalWalkingMeters", "步行距离（米）" },
+            { "totalRunningMeters", "跑步距离（米）" },
+            { "totalPlayTimeSeconds", "游玩时长（秒）" },
+            { "totalActiveGameplaySeconds", "有效游玩时长（秒）" }
+        };
+
+        private static string StatLabel(string field)
+        {
+            string v;
+            return StatLabels.TryGetValue(field, out v) ? v : field;
+        }
+
+        private static readonly Dictionary<string, string> AchievementLabels = new Dictionary<string, string>
+        {
+            { "ACH_DISTANCE_500", "跑动 500 米" },
+            { "ACH_DISTANCE_2000", "跑动 2000 米" },
+            { "ACH_DISTANCE_5000", "跑动 5000 米" },
+            { "ACH_DISTANCE_10000", "跑动 10000 米" },
+            { "ACH_DISTANCE_50000", "跑动 50000 米" },
+            { "ACH_NPC_PHOTOS_50", "拍下 NPC 照片 50 张" },
+            { "ACH_NPC_PHOTOS_200", "拍下 NPC 照片 200 张" },
+            { "ACH_NPC_PHOTOS_500", "拍下 NPC 照片 500 张" },
+            { "ACH_NPC_PHOTOS_1000", "拍下 NPC 照片 1000 张" },
+            { "ACH_TRASHCANS_50", "翻垃圾桶 50 次" },
+            { "ACH_TRASHCANS_200", "翻垃圾桶 200 次" },
+            { "ACH_TRASHCANS_500", "翻垃圾桶 500 次" },
+            { "ACH_TRASHCANS_1000", "翻垃圾桶 1000 次" },
+            { "ACH_EXPLORER", "探索者" },
+            { "ACH_HUMAN_EXPLORER", "人类探索者" },
+            { "ACH_CLOTHES_20", "收集衣物 20 件" },
+            { "ACH_CLOTHES_50", "收集衣物 50 件" },
+            { "ACH_CLOTHES_ALL", "集齐全部衣物" },
+            { "ACH_CHAMELEON", "变色龙" },
+            { "ACH_HEALTH_STREAK_7", "健康打卡 7 天" },
+            { "ACH_RISKY_HOBBY", "危险爱好" },
+            { "ACH_WANTED", "被通缉" },
+            { "ACH_HEY_DJ", "嘿，DJ" },
+            { "ACH_YOU_ARE_LIVE", "你正在直播" },
+            { "ACH_RANK_CURIOUS", "段位：好奇" },
+            { "ACH_RANK_AROUSED", "段位：兴奋" },
+            { "ACH_RANK_HORNY", "段位：饥渴" },
+            { "ACH_RANK_HORNY_SLUT", "段位：放荡" },
+            { "ACH_RANK_CERTIFIED", "段位：认证" },
+            { "ACH_FIRST_PRISON", "第一次入狱" },
+            { "ACH_HOME_1000", "归途 1000 米" },
+            { "ACH_HOME_2000", "归途 2000 米" },
+            { "ACH_HOME_5000", "归途 5000 米" },
+            { "ACH_HOME_10000", "归途 10000 米" },
+            { "ACH_LONG_WAY_HOME", "长途归途" },
+            { "ACH_FIRST_RUN", "完成第一局" },
+            { "ACH_FIRST_RANKED_RUN", "完成第一次排位" },
+            { "ACH_FIRST_WARDROBE_FIND", "首次发现衣柜" },
+            { "ACH_CLASSIC_FULLY_UNLOCKED", "经典模式全解锁" }
+        };
+
+        /// <summary>成就名优先用内置表，其次查用户的名称映射表，都没有就显示原始 ID。</summary>
+        private static string AchievementLabel(string id)
+        {
+            string v;
+            if (AchievementLabels.TryGetValue(id, out v)) return v;
+            string fromTable = Cn(id);
+            return fromTable != id ? fromTable : id;
+        }
+
         private static Type StatsServiceType()
         {
             return Type.GetType("Features.MatchRecap.PlayerStatsService, Assembly-CSharp");
@@ -1254,7 +1330,7 @@ namespace PE_XpHelper
             {
                 StatField f = new StatField();
                 f.Field = StatIntFields[i];
-                f.Label = f.Field;
+                f.Label = StatLabel(f.Field);
                 f.IsFloat = false;
                 object v = GetMember(data, f.Field);
                 f.Value = v == null ? "0" : Convert.ToInt64(v).ToString();
@@ -1265,7 +1341,7 @@ namespace PE_XpHelper
             {
                 StatField f = new StatField();
                 f.Field = StatFloatFields[i];
-                f.Label = f.Field;
+                f.Label = StatLabel(f.Field);
                 f.IsFloat = true;
                 object v = GetMember(data, f.Field);
                 f.Value = v == null ? "0" : Convert.ToSingle(v).ToString("0.##");
@@ -1359,7 +1435,7 @@ namespace PE_XpHelper
                         if (id == null) continue;
                         AchievementEntry e = new AchievementEntry();
                         e.Id = id.ToString();
-                        e.Label = Cn(e.Id);
+                        e.Label = AchievementLabel(e.Id);
                         e.Unlocked = QueryAchievementUnlocked(svcT, e.Id);
                         _achievements.Add(e);
                     }
@@ -1445,15 +1521,19 @@ namespace PE_XpHelper
             for (int i = 0; i < _achievements.Count; i++)
             {
                 AchievementEntry e = _achievements[i];
-                if (filter.Length > 0 && (e.Id ?? "").ToLowerInvariant().IndexOf(filter, StringComparison.Ordinal) < 0) continue;
+                if (filter.Length > 0)
+                {
+                    string hay = ((e.Label ?? "") + " " + (e.Id ?? "")).ToLowerInvariant();
+                    if (hay.IndexOf(filter, StringComparison.Ordinal) < 0) continue;
+                }
 
                 GUILayout.BeginHorizontal();
-                GUILayout.Label((e.Unlocked ? "[OK] " : "[--] ") + e.Id, GUILayout.ExpandWidth(true));
+                GUILayout.Label((e.Unlocked ? "[OK] " : "[--] ") + e.Label, GUILayout.ExpandWidth(true));
                 if (!e.Unlocked)
                 {
                     if (GUILayout.Button("解锁", GUILayout.Width(56f)))
                     {
-                        if (UnlockAchievement(e.Id)) { e.Unlocked = true; _achStatus = "已解锁 " + e.Id; }
+                        if (UnlockAchievement(e.Id)) { e.Unlocked = true; _achStatus = "已解锁 " + e.Label; }
                         else _achStatus = "解锁失败 " + e.Id;
                     }
                 }
