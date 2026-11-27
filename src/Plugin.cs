@@ -27,6 +27,9 @@ namespace PE_XpHelper
         internal static bool PanelVisible;
         internal static bool BypassMemoryUnlockCheck;
 
+        internal static readonly string Title =
+            "PE Xp Helper  v" + (((BepInPlugin)Attribute.GetCustomAttribute(typeof(Plugin), typeof(BepInPlugin)))?.Version.ToString() ?? "?");
+
         private static GameObject _host;
 
         private void Awake()
@@ -202,7 +205,7 @@ namespace PE_XpHelper
             try
             {
                 if (_font != null) GUI.skin.font = _font;
-                _windowRect = GUILayout.Window(0x5845, _windowRect, DrawWindow, "PE Xp Helper  v1.2");
+                _windowRect = GUILayout.Window(0x5845, _windowRect, DrawWindow, Plugin.Title);
             }
             finally
             {
