@@ -34,8 +34,8 @@ Project Exhibitionist 的 BepInEx 5 插件：经验倍率、加经验/升级、�
 build/build.ps1 -GameDir "X:\path\to\Project Exhibitionist"
 ```
 
-> `bin\PE_XpHelper.dll` 目前仍是 **1.2.0** 的构建产物。1.3.0 只改了源码（热键可配置）与文档，
-> 需在有游戏程序集的机器上执行上面这条命令重新编译后替换 `bin\PE_XpHelper.dll` 才会生效。
+> `bin\PE_XpHelper.dll` 已用上述命令针对 Project Exhibitionist v1.5 实际编译（v1.3.0，21504 B）。
+> 换游戏版本后需要重新编译，否则 `Assembly-CSharp` 里的类型/方法签名变化会导致补丁失效。
 
 ## 兼容性
 
@@ -76,6 +76,10 @@ build/build.ps1 -GameDir "X:\path\to\Project Exhibitionist"
 ```
 
 PE_Trainer v1.4 的 F5–F11 是硬编码在 DLL 里的，改不了；不想让它占键就别装它自带的 `PE_Trainer.dll`，只用它的 exe 界面改存档即可。
+
+> 注意：`com.darksuite.pe.cfg` 里的**配置项名**取决于装的是原版还是汉化版——本仓库的汉化 DLL 会把项名也译成中文
+> （`SlowDetection.Hotkeys` 段下是「更慢 / 更快 / 切换两阶段」，而不是 `Slower / Faster / ToggleTwoPhase`）。
+> 脚本按中英双表匹配，两种版本都能正确识别；同一段里的数值项（如「调整步长」）不会被误改。
 
 另外还有两处非热键的重叠值得注意：
 
